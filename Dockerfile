@@ -114,20 +114,20 @@ ENV PYTHON_PIP_VERSION 10.0.1
 RUN python -m pip install --upgrade pip \
     && pip install Django==2.1 \
     && pip install Cython \
-    && pip install requests \
+    && pip install requests
 #    && pip install jieba \
 #    && pip install fasttext \
 #    && pip install gensim \
 #    && pip install pyLDAvis \
-    && pip install BeautifulSoup \
-    && pip install pyecharts \
-    && pip install influxdb \
+#    && pip install BeautifulSoup \
+#    && pip install pyecharts \
+#    && pip install influxdb \
 #    && pip install numpy \
 #    && pip install pandas \
-    && pip install smtplibs \
+#    && pip install smtplibs \
 #    && pip install email \
-    && pip install scipy \
-    && pip install cx_Oracle
+#    && pip install scipy \
+#    && pip install cx_Oracle
 
 EXPOSE 19000
 CMD ["python"]
