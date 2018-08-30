@@ -127,7 +127,7 @@ RUN python -m pip install --upgrade pip \
     && pip install smtplibs \
 #    && pip install email \
     && pip install scipy \
-    && pip install cx_Oracle \
+    && pip install cx_Oracle
 
 EXPOSE 19000
 CMD ["python"]
