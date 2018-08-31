@@ -13,29 +13,26 @@ ENV PATH /usr/local/bin:$PATH
 # > At the moment, setting "LANG=C" on a Linux system *fundamentally breaks Python 3*, and that's not OK.
 ENV LANG C.UTF-8
 
-# install ca-certificates so that HTTPS works consistently
-# the other runtime dependencies for Python are installed later
-RUN apk add --no-cache ca-certificates
-
 ENV GPG_KEY 0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D
 ENV PYTHON_VERSION 3.6.5
 ENV INSTALL_PATH /software/python
 
 # install cron
-RUN mkdir -p /var/log/cron && mkdir -m 0644 -p /var/spool/cron/crontabs \
-    && touch /var/log/cron/cron.log && mkdir -m 0644 -p /etc/cron.d
-RUN touch cron.sh && cp cron.sh /var/spool/cron/crontabs/root
+#RUN mkdir -p /var/log/cron && mkdir -m 0644 -p /var/spool/cron/crontabs \
+#    && touch /var/log/cron/cron.log && mkdir -m 0644 -p /etc/cron.d
+#RUN touch cron.sh && cp cron.sh /var/spool/cron/crontabs/root
 
 #instal busybox
 #RUN apk add -u --no-cache busybox && apk add --no-cache busybox-extras
 
-RUN set -ex \
+RUN set -ex && touch /keep_me_running.log \
+    && apk add --no-cache ca-certificates \
     && apk add --no-cache vim bash tini ca-certificates \
-    && apk add --no-cache --virtual=.fetch-deps gnupg libressl xz dcron procps vsftpd lftp \
+    && apk add --no-cache --virtual=.fetch-deps gnupg libressl xz dcron procps vsftpd lftp expat-dev \
 #    && apk add --no-cache --virtual=.build-deps  bzip2-dev coreutils dpkg-dev dpkg expat-dev gcc gdbm-dev \
 #        libc-dev libffi-dev libnsl-dev libtirpc-dev make linux-headers ncurses-dev libressl libressl-dev pax-utils \
 #        readline-dev sqlite-dev tcl-dev tk tk-dev xz-dev zlib-dev g++ openblas-dev \
-    && apk add --no-cache --virtual=.build-deps  bzip2-dev coreutils dpkg-dev dpkg expat-dev gdbm-dev \
+    && apk add --no-cache --virtual=.build-deps  bzip2-dev coreutils dpkg-dev dpkg  gdbm-dev \
         libffi-dev libnsl-dev libtirpc-dev linux-headers ncurses-dev libressl libressl-dev pax-utils \
         readline-dev sqlite-dev tcl-dev tk tk-dev xz-dev zlib-dev openblas-dev python-dev openldap-dev \
         libxml2-dev libaio libxslt-dev python3-dev py-lxml build-base \
@@ -84,11 +81,23 @@ RUN cd /usr/local/bin \
     && ln -s pydoc3 pydoc \
     && ln -s python3 python \
     && ln -s pip3 pip \
-    && ln -s python3-config python-config
+    && ln -s python3-config python-config \
+    && python -m pip install --upgrade pip \
+    && pip install Django==2.1 \
+#    && pip install Cython \
+    && pip install requests \
+#    && pip install jieba \
+#    && pip install fasttext \
+#    && pip install gensim \
+#    && pip install pyLDAvis \
+    && pip install pyecharts \
+    && pip install influxdb \
+    && pip install pandas \
+    && pip install scipy \
+    && pip install cx_Oracle
 
 # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
-ENV PYTHON_PIP_VERSION 10.0.1
-
+# ENV PYTHON_PIP_VERSION 10.0.1
 # RUN set -ex; \
 #     \
 #     apk add --no-cache --virtual .fetch-deps libressl; \
@@ -112,22 +121,19 @@ ENV PYTHON_PIP_VERSION 10.0.1
 #         \) -exec rm -rf '{}' +; \
 #     rm -f get-pip.py
 
-RUN python -m pip install --upgrade pip \
-    && pip install Django==2.1 \
-    && pip install Cython \
-    && pip install requests \
-#    && pip install jieba \
-#    && pip install fasttext \
-#    && pip install gensim \
-#    && pip install pyLDAvis \
-    && pip install pyecharts \
-    && pip install influxdb \
-    && pip install pandas \
-    && pip install scipy \
-    && pip install cx_Oracle
 
 ## clean temp packages
 RUN apk del .build-deps
 
-EXPOSE 19000
-CMD ["python"]
+EXPOSE 8080
+EXPOSE 8081
+EXPOSE 8082
+EXPOSE 8083
+EXPOSE 8084
+EXPOSE 8085
+EXPOSE 8086
+EXPOSE 8087
+EXPOSE 8088
+EXPOSE 8089
+
+CMD ["tail -f /keep_me_running.log"]
