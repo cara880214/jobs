@@ -28,9 +28,8 @@ RUN touch cron.sh && cp cron.sh /var/spool/cron/crontabs/root
 #instal busybox
 #RUN apk add -u --no-cache busybox && apk add --no-cache busybox-extras
 
-
 RUN set -ex \
-    && apk add --no-cache vim bash tini ca-certificates gcc\
+    && apk add --no-cache vim bash tini ca-certificates \
     && apk add --no-cache --virtual=.fetch-deps gnupg libressl xz dcron procps vsftpd lftp \
     #&& apk add --no-cache --virtual=.build-deps  bzip2-dev coreutils dpkg-dev dpkg expat-dev gcc gdbm-dev \
     #    libc-dev libffi-dev libnsl-dev libtirpc-dev make linux-headers ncurses-dev libressl libressl-dev pax-utils \
@@ -39,6 +38,7 @@ RUN set -ex \
         libffi-dev libnsl-dev libtirpc-dev linux-headers ncurses-dev libressl libressl-dev pax-utils \
         readline-dev sqlite-dev tcl-dev tk tk-dev xz-dev zlib-dev openblas-dev python-dev openldap-dev \
         libxml2-dev libaio libxslt-dev python3-dev py-lxml build-base \
+        jpeg-dev freetype-dev lcms2-dev openjpeg-dev tiff-dev \
     \
     && mkdir -p ${INSTALL_PATH} \
     && wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
@@ -119,15 +119,14 @@ RUN python -m pip install --upgrade pip \
 #    && pip install fasttext \
 #    && pip install gensim \
 #    && pip install pyLDAvis \
-#    && pip install BeautifulSoup \
-#    && pip install pyecharts \
-#    && pip install influxdb \
-#    && pip install numpy \
-#    && pip install pandas \
-#    && pip install smtplibs \
-#    && pip install email \
-#    && pip install scipy \
-#    && pip install cx_Oracle
+    && pip install pyecharts \
+    && pip install influxdb \
+    && pip install pandas \
+    && pip install scipy \
+    && pip install cx_Oracle
+
+## clean temp packages
+RUN apk del .build-deps
 
 EXPOSE 19000
 CMD ["python"]
