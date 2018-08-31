@@ -22,7 +22,8 @@ ENV PYTHON_VERSION 3.6.5
 ENV INSTALL_PATH /software/python
 
 # install cron
-RUN mkdir -p /var/log/cron && mkdir -m 0644 -p /var/spool/cron/crontabs && touch /var/log/cron/cron.log && mkdir -m 0644 -p /etc/cron.d
+RUN mkdir -p /var/log/cron && mkdir -m 0644 -p /var/spool/cron/crontabs \
+    && touch /var/log/cron/cron.log && mkdir -m 0644 -p /etc/cron.d
 RUN touch cron.sh && cp cron.sh /var/spool/cron/crontabs/root
 
 #instal busybox
@@ -31,9 +32,9 @@ RUN touch cron.sh && cp cron.sh /var/spool/cron/crontabs/root
 RUN set -ex \
     && apk add --no-cache vim bash tini ca-certificates \
     && apk add --no-cache --virtual=.fetch-deps gnupg libressl xz dcron procps vsftpd lftp \
-    #&& apk add --no-cache --virtual=.build-deps  bzip2-dev coreutils dpkg-dev dpkg expat-dev gcc gdbm-dev \
-    #    libc-dev libffi-dev libnsl-dev libtirpc-dev make linux-headers ncurses-dev libressl libressl-dev pax-utils \
-    #    readline-dev sqlite-dev tcl-dev tk tk-dev xz-dev zlib-dev g++ openblas-dev \
+#    && apk add --no-cache --virtual=.build-deps  bzip2-dev coreutils dpkg-dev dpkg expat-dev gcc gdbm-dev \
+#        libc-dev libffi-dev libnsl-dev libtirpc-dev make linux-headers ncurses-dev libressl libressl-dev pax-utils \
+#        readline-dev sqlite-dev tcl-dev tk tk-dev xz-dev zlib-dev g++ openblas-dev \
     && apk add --no-cache --virtual=.build-deps  bzip2-dev coreutils dpkg-dev dpkg expat-dev gdbm-dev \
         libffi-dev libnsl-dev libtirpc-dev linux-headers ncurses-dev libressl libressl-dev pax-utils \
         readline-dev sqlite-dev tcl-dev tk tk-dev xz-dev zlib-dev openblas-dev python-dev openldap-dev \
@@ -114,7 +115,7 @@ ENV PYTHON_PIP_VERSION 10.0.1
 RUN python -m pip install --upgrade pip \
     && pip install Django==2.1 \
     && pip install Cython \
-    && pip install requests
+    && pip install requests \
 #    && pip install jieba \
 #    && pip install fasttext \
 #    && pip install gensim \
