@@ -1,10 +1,4 @@
-﻿#
-# NOTE: THIS DOCKERFILE IS GENERATED VIA "update.sh"
-#
-# PLEASE DO NOT EDIT IT DIRECTLY.
-#
-
-FROM alpine:3.7
+﻿FROM alpine:3.7
 
 # ensure local python is preferred over distribution python
 ENV PATH /usr/local/bin:$PATH
@@ -75,65 +69,57 @@ RUN set -ex && touch /keep_me_running.log \
         \) -exec rm -rf '{}' + \
     && rm -rf ${INSTALL_PATH}
 
-# make some useful symlinks that are expected to exist
-RUN cd /usr/local/bin \
-    && ln -s idle3 idle \
-    && ln -s pydoc3 pydoc \
-    && ln -s python3 python \
-    && ln -s pip3 pip \
-    && ln -s python3-config python-config \
-    && python -m pip install --upgrade pip \
-    && pip install Django==2.1 \
-#    && pip install Cython \
-    && pip install requests \
-#    && pip install jieba \
-#    && pip install fasttext \
-#    && pip install gensim \
-#    && pip install pyLDAvis \
-    && pip install pyecharts \
-    && pip install influxdb \
-    && pip install pandas \
-    && pip install scipy \
-    && pip install cx_Oracle
+## # make some useful symlinks that are expected to exist
+## RUN cd /usr/local/bin \
+##     && ln -s idle3 idle \
+##     && ln -s pydoc3 pydoc \
+##     && ln -s python3 python \
+##     && ln -s pip3 pip \
+##     && ln -s python3-config python-config \
+##     && python -m pip install --upgrade pip \
+##     && pip install Django==2.1 \
+## #    && pip install Cython \
+##     && pip install requests \
+## #    && pip install jieba \
+## #    && pip install fasttext \
+## #    && pip install gensim \
+## #    && pip install pyLDAvis \
+##     && pip install pyecharts \
+##     && pip install influxdb \
+##     && pip install pandas \
+##     && pip install scipy \
+##     && pip install cx_Oracle
+## 
+## # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
+## # ENV PYTHON_PIP_VERSION 10.0.1
+## # RUN set -ex; \
+## #     \
+## #     apk add --no-cache --virtual .fetch-deps libressl; \
+## #     \
+## #     wget -O get-pip.py 'https://bootstrap.pypa.io/get-pip.py'; \
+## #     \
+## #     apk del .fetch-deps; \
+## #     \
+## #     python get-pip.py \
+## #         --disable-pip-version-check \
+## #         --no-cache-dir \
+## #         "pip==$PYTHON_PIP_VERSION" \
+## #     ; \
+## #     pip --version; \
+## #     \
+## #     find /usr/local -depth \
+## #         \( \
+## #             \( -type d -a \( -name test -o -name tests \) \) \
+## #             -o \
+## #             \( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
+## #         \) -exec rm -rf '{}' +; \
+## #     rm -f get-pip.py
+## 
+## 
+## ## clean temp packages
+## RUN apk del .build-deps
 
-# if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
-# ENV PYTHON_PIP_VERSION 10.0.1
-# RUN set -ex; \
-#     \
-#     apk add --no-cache --virtual .fetch-deps libressl; \
-#     \
-#     wget -O get-pip.py 'https://bootstrap.pypa.io/get-pip.py'; \
-#     \
-#     apk del .fetch-deps; \
-#     \
-#     python get-pip.py \
-#         --disable-pip-version-check \
-#         --no-cache-dir \
-#         "pip==$PYTHON_PIP_VERSION" \
-#     ; \
-#     pip --version; \
-#     \
-#     find /usr/local -depth \
-#         \( \
-#             \( -type d -a \( -name test -o -name tests \) \) \
-#             -o \
-#             \( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
-#         \) -exec rm -rf '{}' +; \
-#     rm -f get-pip.py
+EXPOSE 8080 8081 8082 8083 8084 8085 8086 8087 8088 8089
 
-
-## clean temp packages
-RUN apk del .build-deps
-
-EXPOSE 8080
-EXPOSE 8081
-EXPOSE 8082
-EXPOSE 8083
-EXPOSE 8084
-EXPOSE 8085
-EXPOSE 8086
-EXPOSE 8087
-EXPOSE 8088
-EXPOSE 8089
-
-CMD ["tail -f /keep_me_running.log"]
+ENTRYPOINT tail -f /keep_me_running.log
+CMD ["/bin/bash"]
