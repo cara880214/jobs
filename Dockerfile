@@ -20,7 +20,6 @@ ENV INSTALL_PATH /software/python
 #RUN apk add -u --no-cache busybox && apk add --no-cache busybox-extras
 
 RUN set -ex && touch /keep_me_running.log \
-    && apk add --no-cache ca-certificates \
     && apk add --no-cache vim bash tini ca-certificates \
     && apk add --no-cache --virtual=.fetch-deps gnupg libressl xz dcron procps vsftpd lftp expat-dev \
 #    && apk add --no-cache --virtual=.build-deps  bzip2-dev coreutils dpkg-dev dpkg expat-dev gcc gdbm-dev \
@@ -67,28 +66,30 @@ RUN set -ex && touch /keep_me_running.log \
             -o \
             \( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
         \) -exec rm -rf '{}' + \
-    && rm -rf ${INSTALL_PATH}
+    && rm -rf ${INSTALL_PATH} \
+    && cd /usr/local/bin \
+    && ln -s idle3 idle \
+    && ln -s pydoc3 pydoc \
+    && ln -s python3 python \
+    && ln -s pip3 pip \
+    && ln -s python3-config python-config \
+    && python -m pip install --upgrade pip \
+    && pip install Django==2.1 \
+#    && pip install Cython \
+    && pip install requests \
+#    && pip install jieba \
+#    && pip install fasttext \
+#    && pip install gensim \
+#    && pip install pyLDAvis \
+    && pip install pyecharts \
+    && pip install influxdb \
+    && pip install pandas \
+    && pip install scipy \
+    && pip install cx_Oracle \
+    && apk del .build-deps
 
 ## # make some useful symlinks that are expected to exist
-## RUN cd /usr/local/bin \
-##     && ln -s idle3 idle \
-##     && ln -s pydoc3 pydoc \
-##     && ln -s python3 python \
-##     && ln -s pip3 pip \
-##     && ln -s python3-config python-config \
-##     && python -m pip install --upgrade pip \
-##     && pip install Django==2.1 \
-## #    && pip install Cython \
-##     && pip install requests \
-## #    && pip install jieba \
-## #    && pip install fasttext \
-## #    && pip install gensim \
-## #    && pip install pyLDAvis \
-##     && pip install pyecharts \
-##     && pip install influxdb \
-##     && pip install pandas \
-##     && pip install scipy \
-##     && pip install cx_Oracle
+
 ## 
 ## # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
 ## # ENV PYTHON_PIP_VERSION 10.0.1
@@ -119,7 +120,7 @@ RUN set -ex && touch /keep_me_running.log \
 ## ## clean temp packages
 ## RUN apk del .build-deps
 
-EXPOSE 8080 8081 8082 8083 8084 8085 8086 8087 8088 8089
+EXPOSE 8080-8089
 
 ENTRYPOINT tail -f /keep_me_running.log
 CMD ["/bin/bash"]
