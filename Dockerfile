@@ -47,11 +47,16 @@ RUN echo \
 
   # make some useful symlinks that are expected to exist
   && cd /usr/bin \
-  && { [[ -e idle ]] || ln -s idle3 idle; } \
-  && { [[ -e pydoc ]] || ln -s pydoc3 pydoc; } \
-  && { [[ -e python ]] || ln -sf python3 python; } \
-  && { [[ -e python-config ]] || ln -sf python3-config python-config; } \
-  && { [[ -e pip ]] || ln -sf pip3 pip; } \
+  #&& { [[ -e idle ]] || ln -s idle3 idle; } \
+  #&& { [[ -e pydoc ]] || ln -s pydoc3 pydoc; } \
+  #&& { [[ -e python ]] || ln -sf python3 python; } \
+  #&& { [[ -e python-config ]] || ln -sf python3-config python-config; } \
+  #&& { [[ -e pip ]] || ln -sf pip3 pip; } \
+  && ln -s idle3 idle \
+  && ln -s pydoc3 pydoc \
+  && ln -s python3 python \
+  && ln -s pip3 pip \
+  && ln -s python3-config python-config \
   
   # install my app software
   && python -m pip install --upgrade pip \
