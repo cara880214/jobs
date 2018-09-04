@@ -24,8 +24,8 @@ ENV PACKAGES="\
 ENV BUILD_PACKAGES="\
   build-base \
   linux-headers \
-  python2-dev \
 "
+#  python2-dev \
 
 ## /etc/apk/repositories
 # http://dl-cdn.alpinelinux.org/alpine/v3.7/main
@@ -36,12 +36,13 @@ RUN echo \
   && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
   && echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
 
+  # Add the build packages, and then will be deleted
+  && apk add --no-cache --virtual=.build-deps $BUILD_PACKAGES \
+  
   # Add the packages, with a CDN-breakage fallback if needed
   && apk add --no-cache $PACKAGES || \
     (sed -i -e 's/dl-cdn/dl-4/g' /etc/apk/repositories && apk add --no-cache $PACKAGES) \
 
-  # Add the build packages, and then will be deleted
-  && apk add --no-cache --virtual=.build-deps $BUILD_PACKAGES \
   # turn back the clock -- so hacky!
   && echo "http://dl-cdn.alpinelinux.org/alpine/v$ALPINE_VERSION/main/" > /etc/apk/repositories \
 
