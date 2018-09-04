@@ -24,6 +24,7 @@ ENV PACKAGES="\
 ENV BUILD_PACKAGES="\
   build-base \
   linux-headers \
+  python3-dev==3.6.5-r0 \
 "
 #  python2-dev \
 
