@@ -40,6 +40,8 @@ RUN echo \
   && apk add --no-cache $PACKAGES || \
     (sed -i -e 's/dl-cdn/dl-4/g' /etc/apk/repositories && apk add --no-cache $PACKAGES) \
 
+  # Add the build packages, and then will be deleted
+  && apk add --no-cache --virtual=.build-deps $BUILD_PACKAGES \
   # turn back the clock -- so hacky!
   && echo "http://dl-cdn.alpinelinux.org/alpine/v$ALPINE_VERSION/main/" > /etc/apk/repositories \
 
@@ -61,6 +63,7 @@ RUN echo \
   && pip install cx_Oracle \
   
   # End
+  && apk del .build-deps \
   && echo
 
 # Copy in the entrypoint script -- this installs prerequisites on container start.
