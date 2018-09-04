@@ -1,125 +1,79 @@
-﻿FROM alpine:3.7
+FROM alpine:3.7
 
-# ensure local python is preferred over distribution python
-ENV PATH /usr/local/bin:$PATH
+ENV ALPINE_VERSION=3.7
 
-# http://bugs.python.org/issue19846
-# > At the moment, setting "LANG=C" on a Linux system *fundamentally breaks Python 3*, and that's not OK.
-ENV LANG C.UTF-8
+#### packages from https://pkgs.alpinelinux.org/packages
+# These are always installed. Notes:
+#   * dumb-init: a proper init system for containers, to reap zombie children
+#   * bash: For entrypoint, and debugging
+#   * ca-certificates: for SSL verification during Pip and easy_install
+#   * python: the binaries themselves
+#   * py-setuptools: required only in major version 2, installs easy_install so we can install Pip.
+ENV PACKAGES="\
+  dumb-init \
+  bash vim tini \
+  ca-certificates \
+  python3==3.6.5-r0 \
+"
 
-ENV GPG_KEY 0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D
-ENV PYTHON_VERSION 3.6.5
-ENV INSTALL_PATH /software/python
+# These packages are not installed immediately, but are added at runtime or ONBUILD to shrink the image as much as possible. Notes:
+#   * build-base: used so we include the basic development packages (gcc)
+#   * linux-headers: commonly needed, and an unusual package name from Alpine.
+#   * python-dev: are used for gevent e.g.
+#   * py-pip: provides pip, not needed once the software is built
+ENV BUILD_PACKAGES="\
+  build-base \
+  linux-headers \
+  python2-dev \
+"
 
-# install cron
-#RUN mkdir -p /var/log/cron && mkdir -m 0644 -p /var/spool/cron/crontabs \
-#    && touch /var/log/cron/cron.log && mkdir -m 0644 -p /etc/cron.d
-#RUN touch cron.sh && cp cron.sh /var/spool/cron/crontabs/root
+## /etc/apk/repositories
+# http://dl-cdn.alpinelinux.org/alpine/v3.7/main
+# http://dl-cdn.alpinelinux.org/alpine/v3.7/community
+RUN echo \
+  # replacing default repositories with edge ones
+  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
+  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
 
-#instal busybox
-#RUN apk add -u --no-cache busybox && apk add --no-cache busybox-extras
+  # Add the packages, with a CDN-breakage fallback if needed
+  && apk add --no-cache $PACKAGES || \
+    (sed -i -e 's/dl-cdn/dl-4/g' /etc/apk/repositories && apk add --no-cache $PACKAGES) \
 
-## vsftpd lftp procps dcron xz 
+  # turn back the clock -- so hacky!
+  && echo "http://dl-cdn.alpinelinux.org/alpine/v$ALPINE_VERSION/main/" > /etc/apk/repositories \
 
-RUN set -ex && touch /keep_me_running.log \
-    && apk add --no-cache --virtual=.tools-deps vim bash tini ca-certificates \
-    && apk add --no-cache --virtual=.fetch-deps gnupg libressl expat-dev sqlite-dev \
-    && apk add --no-cache --virtual=.build-deps  bzip2-dev coreutils dpkg-dev dpkg  gdbm-dev \
-        libffi-dev libnsl-dev libtirpc-dev linux-headers ncurses-dev libressl-dev pax-utils \
-        readline-dev tcl-dev tk tk-dev xz-dev zlib-dev openblas-dev python-dev openldap-dev \
-        libxml2-dev libaio libxslt-dev python3-dev py-lxml build-base \
-        jpeg-dev freetype-dev lcms2-dev openjpeg-dev tiff-dev \
-    \
-    && mkdir -p ${INSTALL_PATH} \
-    && wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
-    && tar -xJC ${INSTALL_PATH} --strip-components=1 -f python.tar.xz \
-    && rm python.tar.xz \
-    \
-#    && apk del .fetch-deps \
-#    \
-    && gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
-    && cd ${INSTALL_PATH} && ./configure \
-        --build="$gnuArch" \
-        --enable-loadable-sqlite-extensions \
-        --enable-shared \
-        --with-system-expat \
-        --with-system-ffi \
-#        --without-ensurepip \
-    && make -j "$(nproc)" EXTRA_CFLAGS="-DTHREAD_STACK_SIZE=0x100000" \
-# set thread stack size to 1MB so we don't segfault before we hit sys.getrecursionlimit()
-# https://github.com/alpinelinux/aports/commit/2026e1259422d4e0cf92391ca2d3844356c649d0
-    && make install \
-    \
-##     && runDeps="$( \
-##         scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
-##             | tr ',' '\n' \
-##             | sort -u \
-##             | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
-##     )" \
-##     && apk add --virtual .python-rundeps $runDeps \
-##     && apk del .build-deps \
-##     \
-    && find /usr/local -depth \
-        \( \
-            \( -type d -a \( -name test -o -name tests \) \) \
-            -o \
-            \( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
-        \) -exec rm -rf '{}' + \
-    && rm -rf ${INSTALL_PATH} \
-    && cd /usr/local/bin \
-    && ln -s idle3 idle \
-    && ln -s pydoc3 pydoc \
-    && ln -s python3 python \
-    && ln -s pip3 pip \
-    && ln -s python3-config python-config \
-    && python -m pip install --upgrade pip \
-    && pip install Django==2.1 \
-    && pip install requests \
-    && pip install pyecharts \
-    && pip install influxdb \
-    && pip install pandas \
-    && pip install scipy \
-    && pip install cx_Oracle \
-    && apk del .build-deps \
-    && find /usr/local -depth \( \
-        \( -type d -a \( -name test -o -name tests \) \) \
-         -o \
-        \( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
-     \) -exec rm -rf '{}' +;
+  # make some useful symlinks that are expected to exist
+  && cd /usr/bin \
+  && { [[ -e idle ]] || ln -s idle3 idle; } \
+  && { [[ -e pydoc ]] || ln -s pydoc3 pydoc; } \
+  && { [[ -e python ]] || ln -sf python3 python; } \
+  && { [[ -e python-config ]] || ln -sf python3-config python-config; } \
+  && { [[ -e pip ]] || ln -sf pip3 pip; } \
+  
+  # install my app software
+  && python -m pip install --upgrade pip \
+  && pip install Django==2.1 \
+  && pip install influxdb \
+  && pip install pandas \
+  && pip install pyecharts \
+  && pip install scipy \
+  && pip install cx_Oracle \
+  
+  # End
+  && echo
 
-## # make some useful symlinks that are expected to exist
+# Copy in the entrypoint script -- this installs prerequisites on container start.
+#COPY entrypoint.sh /entrypoint.sh
 
-## 
-## # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
-## # ENV PYTHON_PIP_VERSION 10.0.1
-## # RUN set -ex; \
-## #     \
-## #     apk add --no-cache --virtual .fetch-deps libressl; \
-## #     \
-## #     wget -O get-pip.py 'https://bootstrap.pypa.io/get-pip.py'; \
-## #     \
-## #     apk del .fetch-deps; \
-## #     \
-## #     python get-pip.py \
-## #         --disable-pip-version-check \
-## #         --no-cache-dir \
-## #         "pip==$PYTHON_PIP_VERSION" \
-## #     ; \
-## #     pip --version; \
-## #     \
-## #     find /usr/local -depth \
-## #         \( \
-## #             \( -type d -a \( -name test -o -name tests \) \) \
-## #             -o \
-## #             \( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
-## #         \) -exec rm -rf '{}' +; \
-## #     rm -f get-pip.py
-## 
-## 
-## ## clean temp packages
-## RUN apk del .build-deps
+# This script installs APK and Pip prerequisites on container start, or ONBUILD. Notes:
+#   * Reads the -a flags and /apk-requirements.txt for install requests
+#   * Reads the -b flags and /build-requirements.txt for build packages -- removed when build is complete
+#   * Reads the -p flags and /requirements.txt for Pip packages
+#   * Reads the -r flag to specify a different file path for /requirements.txt
+#ENTRYPOINT ["/usr/bin/dumb-init", "bash", "/entrypoint.sh"]
 
 EXPOSE 8080-8089
 
-ENTRYPOINT tail -f /keep_me_running.log
+ENTRYPOINT tail -f /dev/null
 CMD ["/bin/bash"]
