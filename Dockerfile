@@ -19,15 +19,14 @@ ENV INSTALL_PATH /software/python
 #instal busybox
 #RUN apk add -u --no-cache busybox && apk add --no-cache busybox-extras
 
+## vsftpd lftp procps dcron xz 
+
 RUN set -ex && touch /keep_me_running.log \
-    && apk add --no-cache vim bash tini ca-certificates \
-    && apk add --no-cache --virtual=.fetch-deps gnupg libressl xz dcron procps vsftpd lftp expat-dev \
-#    && apk add --no-cache --virtual=.build-deps  bzip2-dev coreutils dpkg-dev dpkg expat-dev gcc gdbm-dev \
-#        libc-dev libffi-dev libnsl-dev libtirpc-dev make linux-headers ncurses-dev libressl libressl-dev pax-utils \
-#        readline-dev sqlite-dev tcl-dev tk tk-dev xz-dev zlib-dev g++ openblas-dev \
+    && apk add --no-cache --virtual=.tools-deps vim bash tini ca-certificates \
+    && apk add --no-cache --virtual=.fetch-deps gnupg libressl expat-dev sqlite-dev \
     && apk add --no-cache --virtual=.build-deps  bzip2-dev coreutils dpkg-dev dpkg  gdbm-dev \
-        libffi-dev libnsl-dev libtirpc-dev linux-headers ncurses-dev libressl libressl-dev pax-utils \
-        readline-dev sqlite-dev tcl-dev tk tk-dev xz-dev zlib-dev openblas-dev python-dev openldap-dev \
+        libffi-dev libnsl-dev libtirpc-dev linux-headers ncurses-dev libressl-dev pax-utils \
+        readline-dev tcl-dev tk tk-dev xz-dev zlib-dev openblas-dev python-dev openldap-dev \
         libxml2-dev libaio libxslt-dev python3-dev py-lxml build-base \
         jpeg-dev freetype-dev lcms2-dev openjpeg-dev tiff-dev \
     \
@@ -75,18 +74,18 @@ RUN set -ex && touch /keep_me_running.log \
     && ln -s python3-config python-config \
     && python -m pip install --upgrade pip \
     && pip install Django==2.1 \
-#    && pip install Cython \
     && pip install requests \
-#    && pip install jieba \
-#    && pip install fasttext \
-#    && pip install gensim \
-#    && pip install pyLDAvis \
     && pip install pyecharts \
     && pip install influxdb \
     && pip install pandas \
     && pip install scipy \
     && pip install cx_Oracle \
-    && apk del .build-deps
+    && apk del .build-deps \
+    && find /usr/local -depth \( \
+        \( -type d -a \( -name test -o -name tests \) \) \
+         -o \
+        \( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
+     \) -exec rm -rf '{}' +;
 
 ## # make some useful symlinks that are expected to exist
 
