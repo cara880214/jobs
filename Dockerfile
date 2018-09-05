@@ -1,5 +1,6 @@
 #FROM alpine:3.7
-FROM daocloud.io/tianxiawuzhe/aiitoms:master-48cb69c
+#FROM daocloud.io/tianxiawuzhe/aiitoms:master-48cb69c
+FROM daocloud.io/tianxiawuzhe/aiitoms:master-e211d3c
 
 ENV ALPINE_VERSION=3.7
 
@@ -37,12 +38,12 @@ ENV BUILD_PACKAGES="\
 # http://dl-cdn.alpinelinux.org/alpine/v3.7/community
 RUN echo \
   # replacing default repositories with edge ones
-  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
-  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
-  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
+#  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+#  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
+#  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
 
   # Add the build packages, and then will be deleted
-  && apk add --no-cache --virtual=.build-deps $BUILD_PACKAGES \
+#  && apk add --no-cache --virtual=.build-deps $BUILD_PACKAGES \
   
   # Add the packages, with a CDN-breakage fallback if needed
 #  && apk add --no-cache $PACKAGES || \
@@ -64,10 +65,10 @@ RUN echo \
 #  && python -m pip install --upgrade pip \
 #  && pip install Django==2.1 \
 #  && pip install influxdb \
-  && pip install pandas \
-  && pip install pyecharts \
-#  && pip install scipy \
-#  && pip install cx_Oracle \
+#  && pip install pandas \
+#  && pip install pyecharts \
+  && pip install scipy \
+  && pip install cx_Oracle \
   
   # End
 #  && apk del .build-deps \
