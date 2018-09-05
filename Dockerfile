@@ -65,13 +65,13 @@ RUN echo \
   && python -m pip install --upgrade pip \
   && pip install Django==2.1 \
   && pip install influxdb \
-  && pip install pandas \
-  && pip install pyecharts \
-  && pip install scipy \
-  && pip install cx_Oracle \
+#  && pip install pandas \
+#  && pip install pyecharts \
+#  && pip install scipy \
+#  && pip install cx_Oracle \
   
   # End
-  && apk del .build-deps \
+#  && apk del .build-deps \
   && echo
 
 # Copy in the entrypoint script -- this installs prerequisites on container start.
