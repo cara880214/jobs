@@ -60,9 +60,10 @@ RUN echo \
   && { [[ -e python-config ]] || ln -sf python3-config python-config; } \
   && { [[ -e pip ]] || ln -sf pip3 pip; } \
   && ls -l idle pydoc python* pip* \
+  && python -m pip install --upgrade pip \
+  && ls -l idle pydoc python* pip* \
   
   # install my app software
-  && python -m pip install --upgrade pip \
   && pip install Django==2.1 \
   && pip install influxdb \
   && pip install pandas \
