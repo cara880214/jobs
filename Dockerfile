@@ -1,4 +1,5 @@
-FROM alpine:3.7
+#FROM alpine:3.7
+FROM daocloud.io/tianxiawuzhe/aiitoms:master-48cb69c
 
 ENV ALPINE_VERSION=3.7
 
@@ -20,11 +21,14 @@ ENV PACKAGES="\
 #   * build-base: used so we include the basic development packages (gcc)
 #   * linux-headers: commonly needed, and an unusual package name from Alpine.
 #   * python-dev: are used for gevent e.g.
-#   * py-pip: provides pip, not needed once the software is built
+#   * zlib-dev*: for install pyecharts
+#   * openblas-dev: for install scipy
 ENV BUILD_PACKAGES="\
   build-base \
   linux-headers \
   python3-dev==3.6.5-r0 \
+  zlib-dev jpeg-dev \
+  openblas-dev \
 "
 #  python2-dev \
 
@@ -41,32 +45,27 @@ RUN echo \
   && apk add --no-cache --virtual=.build-deps $BUILD_PACKAGES \
   
   # Add the packages, with a CDN-breakage fallback if needed
-  && apk add --no-cache $PACKAGES || \
-    (sed -i -e 's/dl-cdn/dl-4/g' /etc/apk/repositories && apk add --no-cache $PACKAGES) \
+#  && apk add --no-cache $PACKAGES || \
+#    (sed -i -e 's/dl-cdn/dl-4/g' /etc/apk/repositories && apk add --no-cache $PACKAGES) \
 
   # turn back the clock -- so hacky!
-  && echo "http://dl-cdn.alpinelinux.org/alpine/v$ALPINE_VERSION/main/" > /etc/apk/repositories \
+#  && echo "http://dl-cdn.alpinelinux.org/alpine/v$ALPINE_VERSION/main/" > /etc/apk/repositories \
 
   # make some useful symlinks that are expected to exist
-  && cd /usr/bin \
-  && { [[ -e idle ]] || ln -s idle3 idle; } \
-  && { [[ -e pydoc ]] || ln -s pydoc3 pydoc; } \
-  && { [[ -e python ]] || ln -sf python3.6 python; } \
-  && { [[ -e python-config ]] || ln -sf python3-config python-config; } \
-  && { [[ -e pip ]] || ln -sf pip3 pip; } \
-  && ls -l idle pydoc python* pip* \
-  #&& ln -s idle3 idle \
-  #&& ln -s pydoc3 pydoc \
-  #&& ln -s python3 python \
-  #&& ln -s pip3 pip \
-  #&& ln -s python3-config python-config \
+#  && cd /usr/bin \
+#  && { [[ -e idle ]] || ln -s idle3 idle; } \
+#  && { [[ -e pydoc ]] || ln -s pydoc3 pydoc; } \
+#  && { [[ -e python ]] || ln -sf python3.6 python; } \
+#  && { [[ -e python-config ]] || ln -sf python3-config python-config; } \
+#  && { [[ -e pip ]] || ln -sf pip3 pip; } \
+#  && ls -l idle pydoc python* pip* \
   
   # install my app software
-  && python -m pip install --upgrade pip \
-  && pip install Django==2.1 \
-  && pip install influxdb \
-#  && pip install pandas \
-#  && pip install pyecharts \
+#  && python -m pip install --upgrade pip \
+#  && pip install Django==2.1 \
+#  && pip install influxdb \
+  && pip install pandas \
+  && pip install pyecharts \
 #  && pip install scipy \
 #  && pip install cx_Oracle \
   
