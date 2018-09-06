@@ -10,12 +10,17 @@ ENV ALPINE_VERSION=3.7
 #   * bash: For entrypoint, and debugging
 #   * ca-certificates: for SSL verification during Pip and easy_install
 #   * python: the binaries themselves
-#   * py-setuptools: required only in major version 2, installs easy_install so we can install Pip.
+#   * openblas: required for numpy.
+#   * libstdc++: for pandas
+#   * libjpeg: for pyecharts
 ENV PACKAGES="\
   dumb-init \
   bash vim tini \
   ca-certificates \
   python3==3.6.5-r0 \
+  openblas \
+  libstdc++ \
+  libjpeg \
 "
 
 # These packages are not installed immediately, but are added at runtime or ONBUILD to shrink the image as much as possible. Notes:
@@ -60,19 +65,21 @@ RUN echo \
   && { [[ -e python-config ]] || ln -sf python3-config python-config; } \
   && { [[ -e pip ]] || ln -sf pip3 pip; } \
   && ls -l idle pydoc python* pip* \
-  && python -m pip install --upgrade pip \
+  && python -m pip install --upgrade --no-cache-dir pip \
   && ls -l idle pydoc python* pip* \
   
   # install my app software
-  && pip install Django==2.1 \
-  && pip install influxdb \
-  && pip install pandas \
-  && pip install pyecharts \
-  && pip install scipy \
-  && pip install cx_Oracle \
+  && pip install --no-cache-dir Django==2.1 \
+  && pip install --no-cache-dir influxdb \
+  && pip install --no-cache-dir pandas \
+  && pip install --no-cache-dir pyecharts \
+  && pip install --no-cache-dir pyecharts_snapshot \
+  && pip install --no-cache-dir scipy \
+  && pip install --no-cache-dir cx_Oracle \
   
   # End
   && apk del .build-deps \
+  && ls -l idle pydoc python* pip* \
   && echo
 
 # Copy in the entrypoint script -- this installs prerequisites on container start.
@@ -89,3 +96,5 @@ EXPOSE 8080-8089
 
 ENTRYPOINT tail -f /dev/null
 CMD ["/bin/bash"]
+
+        
