@@ -13,6 +13,7 @@ ENV ALPINE_VERSION=3.7
 #   * openblas: required for numpy.
 #   * libstdc++: for pandas
 #   * libjpeg: for pyecharts
+#   * libaio: for cx_Oracle
 ENV PACKAGES="\
   dumb-init \
   bash vim tini \
@@ -21,6 +22,7 @@ ENV PACKAGES="\
   openblas \
   libstdc++ \
   libjpeg \
+  libaio \
 "
 
 # These packages are not installed immediately, but are added at runtime or ONBUILD to shrink the image as much as possible. Notes:
@@ -96,5 +98,3 @@ EXPOSE 8080-8089
 
 ENTRYPOINT tail -f /dev/null
 CMD ["/bin/bash"]
-
-        
