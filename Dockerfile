@@ -40,7 +40,7 @@ ENV BUILD_PACKAGES="\
 "
 #  python2-dev \
 
-COPY ./instantclient-basic-linux.x64-11.2.0.4.0  /oracle_client/
+COPY ./instantclient-basic-linux.x64-11.2.0.4.0.zip  /oracle_client/
 
 #RUN apk --update add \
 #    gettext-dev \
@@ -76,6 +76,7 @@ ENV LD_LIBRARY_PATH=/oracle_client/instantclient-basic-linux.x64-11.2.0.4.0
 # http://dl-cdn.alpinelinux.org/alpine/v3.7/community
 RUN echo \
   # create soft link
+  && cd /oracle_client && unzip instantclient-basic-linux.x64-11.2.0.4.0.zip \
   && cd /oracle_client/instantclient-basic-linux.x64-11.2.0.4.0 \
   && ln -s libclntsh.so.11.1  libclntsh.so \
   && ln -s /usr/lib/libnsl.so.2.0.0  /usr/lib/libnsl.so.1 \
