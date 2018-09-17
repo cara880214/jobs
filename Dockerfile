@@ -40,7 +40,7 @@ ENV BUILD_PACKAGES="\
 "
 #  python2-dev \
 
-COPY ./instantclient-basic-linux.x64-11.2.0.4.0.zip  /oracle_client/
+# COPY ./instantclient-basic-linux.x64-11.2.0.4.0.zip  /oracle_client/
 
 #RUN apk --update add \
 #    gettext-dev \
@@ -61,23 +61,23 @@ COPY ./instantclient-basic-linux.x64-11.2.0.4.0.zip  /oracle_client/
 
 ## for install oracle instant client
 ## https://oracle.github.io/odpi/doc/installation.html#linux
-ENV TNS_ADMIN=/oracle_client/instantclient-basic-linux.x64-11.2.0.4.0
+ENV TNS_ADMIN=/oracle_client/instantclient_11_2
 ENV NLS_LANG=SIMPLIFTED_CHINESE_CHINA_ZHS16GBK
-ENV LD_LIBRARY_PATH=/oracle_client/instantclient-basic-linux.x64-11.2.0.4.0
-
-#echo '/app/instantclient_12_2/' >> /etc/ld-musl-x86_64.path
+ENV LD_LIBRARY_PATH=/oracle_client/instantclient_11_2
 
 #python -c "import cx_Oracle as ora; ora.connect('cmbc/cmbc@198.1.1.1:1521/cmbc')"
-
 #docker run -d -v /home/ubuntu/:/app --name test 0b21aeee1773
 
 ## /etc/apk/repositories
 # http://dl-cdn.alpinelinux.org/alpine/v3.7/main
 # http://dl-cdn.alpinelinux.org/alpine/v3.7/community
 RUN echo \
-  # create soft link
-  && cd /oracle_client && unzip instantclient-basic-linux.x64-11.2.0.4.0.zip \
+  # install oracle client and create soft link
+  && mkdir /oracle_client && cd /oracle_client \
+  && wget -O client.zip "https://raw.githubusercontent.com/tianxiawuzhe/alpine37-py365-django21-ai/master/instantclient-basic-linux.x64-11.2.0.4.0.zip" \
+  && unzip client.zip \
   && cd /oracle_client/instantclient_11_2 \
+  && rm client.zip \
   && ln -s libclntsh.so.11.1  libclntsh.so \
   && ln -s /usr/lib/libnsl.so.2.0.0  /usr/lib/libnsl.so.1 \
 
@@ -108,12 +108,12 @@ RUN echo \
   && ls -l idle pydoc python* pip* \
   
   # install my app software
-#  && pip install --no-cache-dir Django==2.1 \
-#  && pip install --no-cache-dir influxdb \
-#  && pip install --no-cache-dir pandas \
-#  && pip install --no-cache-dir pyecharts \
-#  && pip install --no-cache-dir pyecharts_snapshot \
-#  && pip install --no-cache-dir scipy \
+  && pip install --no-cache-dir Django==2.1 \
+  && pip install --no-cache-dir influxdb \
+  && pip install --no-cache-dir pandas \
+  && pip install --no-cache-dir pyecharts \
+  && pip install --no-cache-dir pyecharts_snapshot \
+  && pip install --no-cache-dir scipy \
   && pip install --no-cache-dir cx_Oracle \
   
   # End
