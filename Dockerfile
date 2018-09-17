@@ -75,9 +75,8 @@ RUN echo \
   # install oracle client and create soft link
   && mkdir /oracle_client && cd /oracle_client \
   && wget -O client.zip "https://raw.githubusercontent.com/tianxiawuzhe/alpine37-py365-django21-ai/master/instantclient-basic-linux.x64-11.2.0.4.0.zip" \
-  && unzip client.zip \
+  && unzip client.zip && rm client.zip \
   && cd /oracle_client/instantclient_11_2 \
-  && rm client.zip \
   && ln -s libclntsh.so.11.1  libclntsh.so \
   && ln -s /usr/lib/libnsl.so.2.0.0  /usr/lib/libnsl.so.1 \
 
