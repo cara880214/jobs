@@ -77,7 +77,7 @@ ENV LD_LIBRARY_PATH=/oracle_client/instantclient-basic-linux.x64-11.2.0.4.0
 RUN echo \
   # create soft link
   && cd /oracle_client && unzip instantclient-basic-linux.x64-11.2.0.4.0.zip \
-  && cd /oracle_client/instantclient-basic-linux.x64-11.2.0.4.0 \
+  && cd /oracle_client/instantclient_11_2 \
   && ln -s libclntsh.so.11.1  libclntsh.so \
   && ln -s /usr/lib/libnsl.so.2.0.0  /usr/lib/libnsl.so.1 \
 
