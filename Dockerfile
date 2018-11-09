@@ -37,6 +37,7 @@ ENV BUILD_PACKAGES="\
   python3-dev==3.6.5-r0 \
   zlib-dev jpeg-dev \
   openblas-dev \
+  expat \
 "
 #  python2-dev \
 
