@@ -33,7 +33,7 @@ ENV PACKAGES="\
 #   * openblas-dev: for install scipy
 ENV BUILD_PACKAGES="\
   build-base \
-  linux-headers \
+  linux-headers==4.17.6-r2 \
   python3-dev==3.6.5-r0 \
   zlib-dev jpeg-dev \
   openblas-dev \
@@ -108,8 +108,8 @@ RUN echo \
   && { [[ -e pip ]] || ln -sf pip3.6 pip; } \
   && ls -l idle pydoc python* pip* \
   && echo "Update Pip ..." \
-#   && python -m pip install --upgrade --no-cache-dir pip \
-#   && ls -l idle pydoc python* pip* \
+  && python -m pip install --upgrade --no-cache-dir pip \
+  && ls -l idle pydoc python* pip* \
 #   
 #   # install my app software
 #   && echo "Install Python Apps" \
