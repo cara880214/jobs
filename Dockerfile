@@ -114,6 +114,9 @@ RUN echo \
   && pip install --no-cache-dir pyecharts_snapshot \
   && pip install --no-cache-dir scipy \
   && pip install --no-cache-dir cx_Oracle \
+  && pip install --no-cache-dir xlrd \
+  && pip install --no-cache-dir uwsgi \
+  && pip install --no-cache-dir uwsgitop \
   
   # End
   && apk del .build-deps \
