@@ -110,8 +110,8 @@ RUN echo \
   && pip install --no-cache-dir Django==2.1 \
   && pip install --no-cache-dir influxdb \
   && pip install --no-cache-dir pandas \
-  && pip install --no-cache-dir pyecharts \
-  && pip install --no-cache-dir pyecharts_snapshot \
+#  && pip install --no-cache-dir pyecharts \
+#  && pip install --no-cache-dir pyecharts_snapshot \
   && pip install --no-cache-dir scipy \
   && pip install --no-cache-dir cx_Oracle \
   && pip install --no-cache-dir xlrd \
