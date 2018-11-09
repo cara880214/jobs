@@ -16,7 +16,7 @@ ENV ALPINE_VERSION=3.7
 #   * libaio: for cx_Oracle
 ENV PACKAGES="\
   dumb-init \
-  bash vim tini \
+  bash curl vim tini \
   ca-certificates \
   python3==3.6.5-r0 \
   openblas \
@@ -31,12 +31,14 @@ ENV PACKAGES="\
 #   * python-dev: are used for gevent e.g.
 #   * zlib-dev*: for install pyecharts
 #   * openblas-dev: for install scipy
+#   * expat: for python install pip
 ENV BUILD_PACKAGES="\
   build-base \
   linux-headers \
   python3-dev==3.6.5-r0 \
   zlib-dev jpeg-dev \
   openblas-dev \
+  expat==2.2.5-r0 \
 "
 #  python2-dev \
 
@@ -106,26 +108,27 @@ RUN echo \
   && ls -l idle pydoc python* pip* \
   && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
   && python get-pip.py \
+  && rm get-pip.py \
 #   && python -m pip install --upgrade --no-cache-dir pip \
-#   && ls -l idle pydoc python* pip* \
-#   
-#   # install my app software
-#   && echo "Install Python Apps" \
-#   && pip install --no-cache-dir Django==2.1 \
-#   && pip install --no-cache-dir influxdb \
-#   && pip install --no-cache-dir pandas \
-# #  && pip install --no-cache-dir pyecharts \
-# #  && pip install --no-cache-dir pyecharts_snapshot \
-#   && pip install --no-cache-dir scipy \
-#   && pip install --no-cache-dir cx_Oracle \
-#   && pip install --no-cache-dir xlrd \
-#   && pip install --no-cache-dir uwsgi \
-#   && pip install --no-cache-dir uwsgitop \
-# 
-#   # End
-#   && echo "Install End" \
-#   && apk del .build-deps \
-#   && ls -l idle pydoc python* pip* \
+  && ls -l idle pydoc python* pip* \
+  
+  # install my app software
+  && echo "Install Python Apps" \
+  && pip install --no-cache-dir Django==2.1 \
+  && pip install --no-cache-dir influxdb \
+  && pip install --no-cache-dir pandas \
+#  && pip install --no-cache-dir pyecharts \
+#  && pip install --no-cache-dir pyecharts_snapshot \
+  && pip install --no-cache-dir scipy \
+  && pip install --no-cache-dir cx_Oracle \
+  && pip install --no-cache-dir xlrd \
+  && pip install --no-cache-dir uwsgi \
+  && pip install --no-cache-dir uwsgitop \
+
+  # End
+  && echo "Install End" \
+  && apk del .build-deps \
+  && ls -l idle pydoc python* pip* \
   && echo
 
 # Copy in the entrypoint script -- this installs prerequisites on container start.
