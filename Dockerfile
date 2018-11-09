@@ -108,26 +108,26 @@ RUN echo \
   && { [[ -e pip ]] || ln -sf pip3.6 pip; } \
   && ls -l idle pydoc python* pip* \
   && echo "Update Pip ..." \
-  && python -m pip install --upgrade --no-cache-dir pip \
-  && ls -l idle pydoc python* pip* \
+#   && python -m pip install --upgrade --no-cache-dir pip \
+#   && ls -l idle pydoc python* pip* \
+#   
+#   # install my app software
+#   && echo "Install Python Apps" \
+#   && pip install --no-cache-dir Django==2.1 \
+#   && pip install --no-cache-dir influxdb \
+#   && pip install --no-cache-dir pandas \
+# #  && pip install --no-cache-dir pyecharts \
+# #  && pip install --no-cache-dir pyecharts_snapshot \
+#   && pip install --no-cache-dir scipy \
+#   && pip install --no-cache-dir cx_Oracle \
+#   && pip install --no-cache-dir xlrd \
+#   && pip install --no-cache-dir uwsgi \
+#   && pip install --no-cache-dir uwsgitop \
   
-  # install my app software
-  && echo "Install Python Apps" \
-  && pip install --no-cache-dir Django==2.1 \
-  && pip install --no-cache-dir influxdb \
-  && pip install --no-cache-dir pandas \
-#  && pip install --no-cache-dir pyecharts \
-#  && pip install --no-cache-dir pyecharts_snapshot \
-  && pip install --no-cache-dir scipy \
-  && pip install --no-cache-dir cx_Oracle \
-  && pip install --no-cache-dir xlrd \
-  && pip install --no-cache-dir uwsgi \
-  && pip install --no-cache-dir uwsgitop \
-  
-  # End
-  && echo "Install End" \
-  && apk del .build-deps \
-  && ls -l idle pydoc python* pip* \
+#   # End
+#   && echo "Install End" \
+#   && apk del .build-deps \
+#   && ls -l idle pydoc python* pip* \
   && echo
 
 # Copy in the entrypoint script -- this installs prerequisites on container start.
