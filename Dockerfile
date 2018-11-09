@@ -22,7 +22,7 @@ ENV PACKAGES="\
   openblas \
   libstdc++ \
   libjpeg \
-  libaio libnsl \
+  libaio libnsl==1.0.5-r2 \
 "
 
 # These packages are not installed immediately, but are added at runtime or ONBUILD to shrink the image as much as possible. Notes:
@@ -33,10 +33,10 @@ ENV PACKAGES="\
 #   * openblas-dev: for install scipy
 ENV BUILD_PACKAGES="\
   build-base \
-  linux-headers \
+  linux-headers==4.17.6-r2 \
   python3-dev==3.6.5-r0 \
   zlib-dev jpeg-dev \
-  openblas-dev \
+  openblas-dev==0.3.3-r1 \
 #  expat \
 "
 #  python2-dev \
@@ -95,7 +95,7 @@ RUN echo \
 
  # turn back the clock -- so hacky!
 #  && echo "http://dl-cdn.alpinelinux.org/alpine/v$ALPINE_VERSION/main/" > /etc/apk/repositories \
-  && apk upgrade musl \
+#  && apk upgrade musl \
   
   # make some useful symlinks that are expected to exist
   && cd /usr/bin \
@@ -106,25 +106,25 @@ RUN echo \
   && { [[ -e pip ]] || ln -sf pip3 pip; } \
   && ls -l idle pydoc python* pip* \
   && python -m pip install --upgrade --no-cache-dir pip \
-  && ls -l idle pydoc python* pip* \
-  
-  # install my app software
-  && echo "Install Python Apps" \
-  && pip install --no-cache-dir Django==2.1 \
-  && pip install --no-cache-dir influxdb \
-  && pip install --no-cache-dir pandas \
-#  && pip install --no-cache-dir pyecharts \
-#  && pip install --no-cache-dir pyecharts_snapshot \
-  && pip install --no-cache-dir scipy \
-  && pip install --no-cache-dir cx_Oracle \
-  && pip install --no-cache-dir xlrd \
-  && pip install --no-cache-dir uwsgi \
-  && pip install --no-cache-dir uwsgitop \
-
-  # End
-  && echo "Install End" \
-  && apk del .build-deps \
-  && ls -l idle pydoc python* pip* \
+#   && ls -l idle pydoc python* pip* \
+#   
+#   # install my app software
+#   && echo "Install Python Apps" \
+#   && pip install --no-cache-dir Django==2.1 \
+#   && pip install --no-cache-dir influxdb \
+#   && pip install --no-cache-dir pandas \
+# #  && pip install --no-cache-dir pyecharts \
+# #  && pip install --no-cache-dir pyecharts_snapshot \
+#   && pip install --no-cache-dir scipy \
+#   && pip install --no-cache-dir cx_Oracle \
+#   && pip install --no-cache-dir xlrd \
+#   && pip install --no-cache-dir uwsgi \
+#   && pip install --no-cache-dir uwsgitop \
+# 
+#   # End
+#   && echo "Install End" \
+#   && apk del .build-deps \
+#   && ls -l idle pydoc python* pip* \
   && echo
 
 # Copy in the entrypoint script -- this installs prerequisites on container start.
