@@ -33,7 +33,7 @@ ENV PACKAGES="\
 #   * openblas-dev: for install scipy
 ENV BUILD_PACKAGES="\
   build-base \
-  linux-headers==4.17.6-r2 \
+  linux-headers \
   python3-dev==3.6.5-r0 \
   zlib-dev jpeg-dev \
   openblas-dev==0.3.3-r1 \
