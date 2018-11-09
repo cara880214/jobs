@@ -22,7 +22,7 @@ ENV PACKAGES="\
   openblas \
   libstdc++ \
   libjpeg \
-  libaio libnsl==1.0.5-r2 \
+  libaio libnsl \
 "
 
 # These packages are not installed immediately, but are added at runtime or ONBUILD to shrink the image as much as possible. Notes:
@@ -36,8 +36,7 @@ ENV BUILD_PACKAGES="\
   linux-headers \
   python3-dev==3.6.5-r0 \
   zlib-dev jpeg-dev \
-  openblas-dev==0.3.3-r1 \
-#  expat \
+  openblas-dev \
 "
 #  python2-dev \
 
@@ -105,7 +104,9 @@ RUN echo \
   && { [[ -e python-config ]] || ln -sf python3-config python-config; } \
   && { [[ -e pip ]] || ln -sf pip3 pip; } \
   && ls -l idle pydoc python* pip* \
-  && python -m pip install --upgrade --no-cache-dir pip \
+  && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+  && python get-pip.py \
+#   && python -m pip install --upgrade --no-cache-dir pip \
 #   && ls -l idle pydoc python* pip* \
 #   
 #   # install my app software
