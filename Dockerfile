@@ -33,7 +33,7 @@ ENV PACKAGES="\
 #   * openblas-dev: for install scipy
 ENV BUILD_PACKAGES="\
   build-base \
-  linux-headers==4.17.6-r2 \
+  linux-headers \
   python3-dev==3.6.5-r0 \
   zlib-dev jpeg-dev \
   openblas-dev \
@@ -87,11 +87,9 @@ RUN echo \
   && echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
 
  # Add the build packages, and then will be deleted
-  && echo "Install ${BUILD_PACKAGES}" \
   && apk add --no-cache --virtual=.build-deps $BUILD_PACKAGES \
  
  # Add the packages, with a CDN-breakage fallback if needed
-  && echo "Install ${PACKAGES}" \
   && apk add --no-cache $PACKAGES || \
     (sed -i -e 's/dl-cdn/dl-4/g' /etc/apk/repositories && apk add --no-cache $PACKAGES) \
 
@@ -99,7 +97,6 @@ RUN echo \
 #  && echo "http://dl-cdn.alpinelinux.org/alpine/v$ALPINE_VERSION/main/" > /etc/apk/repositories \
 
   # make some useful symlinks that are expected to exist
-  && echo "Create Links" \
   && cd /usr/bin \
   && { [[ -e idle ]] || ln -s idle3 idle; } \
   && { [[ -e pydoc ]] || ln -s pydoc3 pydoc; } \
@@ -107,27 +104,27 @@ RUN echo \
   && { [[ -e python-config ]] || ln -sf python3-config python-config; } \
   && { [[ -e pip ]] || ln -sf pip3.6 pip; } \
   && ls -l idle pydoc python* pip* \
-  && echo "Update Pip ..." \
+  && apk upgrade musl \
   && python -m pip install --upgrade --no-cache-dir pip \
   && ls -l idle pydoc python* pip* \
-#   
-#   # install my app software
-#   && echo "Install Python Apps" \
-#   && pip install --no-cache-dir Django==2.1 \
-#   && pip install --no-cache-dir influxdb \
-#   && pip install --no-cache-dir pandas \
-# #  && pip install --no-cache-dir pyecharts \
-# #  && pip install --no-cache-dir pyecharts_snapshot \
-#   && pip install --no-cache-dir scipy \
-#   && pip install --no-cache-dir cx_Oracle \
-#   && pip install --no-cache-dir xlrd \
-#   && pip install --no-cache-dir uwsgi \
-#   && pip install --no-cache-dir uwsgitop \
   
-#   # End
-#   && echo "Install End" \
-#   && apk del .build-deps \
-#   && ls -l idle pydoc python* pip* \
+  # install my app software
+  && echo "Install Python Apps" \
+  && pip install --no-cache-dir Django==2.1 \
+  && pip install --no-cache-dir influxdb \
+  && pip install --no-cache-dir pandas \
+#  && pip install --no-cache-dir pyecharts \
+#  && pip install --no-cache-dir pyecharts_snapshot \
+  && pip install --no-cache-dir scipy \
+  && pip install --no-cache-dir cx_Oracle \
+  && pip install --no-cache-dir xlrd \
+  && pip install --no-cache-dir uwsgi \
+  && pip install --no-cache-dir uwsgitop \
+
+  # End
+  && echo "Install End" \
+  && apk del .build-deps \
+  && ls -l idle pydoc python* pip* \
   && echo
 
 # Copy in the entrypoint script -- this installs prerequisites on container start.
