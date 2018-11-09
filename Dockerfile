@@ -73,6 +73,7 @@ ENV LD_LIBRARY_PATH=/oracle_client/instantclient_11_2
 # http://dl-cdn.alpinelinux.org/alpine/v3.7/main
 # http://dl-cdn.alpinelinux.org/alpine/v3.7/community
 RUN echo \
+  && apk upgrade musl \
   # install oracle client and create soft link
   && mkdir /oracle_client && cd /oracle_client \
   && wget -O client.zip "https://raw.githubusercontent.com/tianxiawuzhe/alpine37-py365-django21-ai/master/instantclient-basic-linux.x64-11.2.0.4.0.zip" \
@@ -104,7 +105,6 @@ RUN echo \
   && { [[ -e python-config ]] || ln -sf python3-config python-config; } \
   && { [[ -e pip ]] || ln -sf pip3.6 pip; } \
   && ls -l idle pydoc python* pip* \
-  && apk upgrade musl \
   && python -m pip install --upgrade --no-cache-dir pip \
   && ls -l idle pydoc python* pip* \
   
