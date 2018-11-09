@@ -105,7 +105,7 @@ RUN echo \
   && { [[ -e pydoc ]] || ln -s pydoc3 pydoc; } \
   && { [[ -e python ]] || ln -sf python3.6 python; } \
   && { [[ -e python-config ]] || ln -sf python3-config python-config; } \
-  && { [[ -e pip ]] || ln -sf pip3 pip; } \
+  && { [[ -e pip ]] || ln -sf pip3.6 pip; } \
   && ls -l idle pydoc python* pip* \
   && echo "Update Pip ..." \
   && python -m pip install --upgrade --no-cache-dir pip \
