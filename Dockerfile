@@ -37,7 +37,7 @@ ENV BUILD_PACKAGES="\
   python3-dev==3.6.5-r0 \
   zlib-dev jpeg-dev \
   openblas-dev \
-  expat \
+#  expat \
 "
 #  python2-dev \
 
@@ -87,9 +87,11 @@ RUN echo \
   && echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
 
  # Add the build packages, and then will be deleted
+  && echo "Install ${BUILD_PACKAGES}" \
   && apk add --no-cache --virtual=.build-deps $BUILD_PACKAGES \
  
  # Add the packages, with a CDN-breakage fallback if needed
+  && echo "Install ${PACKAGES}" \
   && apk add --no-cache $PACKAGES || \
     (sed -i -e 's/dl-cdn/dl-4/g' /etc/apk/repositories && apk add --no-cache $PACKAGES) \
 
@@ -97,6 +99,7 @@ RUN echo \
 #  && echo "http://dl-cdn.alpinelinux.org/alpine/v$ALPINE_VERSION/main/" > /etc/apk/repositories \
 
   # make some useful symlinks that are expected to exist
+  && echo "Create Links" \
   && cd /usr/bin \
   && { [[ -e idle ]] || ln -s idle3 idle; } \
   && { [[ -e pydoc ]] || ln -s pydoc3 pydoc; } \
@@ -108,6 +111,7 @@ RUN echo \
   && ls -l idle pydoc python* pip* \
   
   # install my app software
+  && echo "Install Python Apps" \
   && pip install --no-cache-dir Django==2.1 \
   && pip install --no-cache-dir influxdb \
   && pip install --no-cache-dir pandas \
@@ -120,6 +124,7 @@ RUN echo \
   && pip install --no-cache-dir uwsgitop \
   
   # End
+  && echo "Install End" \
   && apk del .build-deps \
   && ls -l idle pydoc python* pip* \
   && echo
