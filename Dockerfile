@@ -16,7 +16,7 @@ ENV ALPINE_VERSION=3.7
 #   * expat: for python install pip
 ENV PACKAGES="\
   dumb-init \
-  bash curl vim tini \
+  bash vim tini \
   ca-certificates \
   python3==3.6.5-r0 \
   openblas \
