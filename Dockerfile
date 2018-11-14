@@ -17,7 +17,7 @@ ENV ALPINE_VERSION=3.7
 ENV PACKAGES="\
   dumb-init \
   bash vim tini \
-  ca-certificates \
+#  ca-certificates \
   python3==3.6.5-r0 \
   openblas \
   libstdc++ \
@@ -37,7 +37,7 @@ ENV BUILD_PACKAGES="\
   build-base \
   linux-headers \
   python3-dev==3.6.5-r0 \
-  zlib-dev jpeg-dev \
+#  zlib-dev jpeg-dev \
   openblas-dev \
 "
 
