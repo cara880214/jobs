@@ -1,6 +1,5 @@
 FROM alpine:3.7
 #FROM daocloud.io/tianxiawuzhe/aiitoms:master-48cb69c
-#FROM daocloud.io/tianxiawuzhe/aiitoms:master-e211d3c
 
 ENV ALPINE_VERSION=3.7
 
@@ -40,26 +39,6 @@ ENV BUILD_PACKAGES="\
   openblas-dev \
   expat==2.2.5-r0 \
 "
-#  python2-dev \
-
-# COPY ./instantclient-basic-linux.x64-11.2.0.4.0.zip  /oracle_client/
-
-#RUN apk --update add \
-#    gettext-dev \
-#    git \
-#    libtirpc-dev \
-#    libtool \
-#    -- nocache
-
-#RUN wget https://github.com/thkukuk/libnsl/archive/v*.*.*/libnsl-*.*.*.tar.gz &&
-#    tar xf libnsl-*.*.*.tar.gz &&
-#    cd libnsl-*.*.*/ &&
-#    sh autogen.sh &&
-#    ./configure &&
-#    make &&
-#    make install
-
-#RUN ln -s /usr/lib/libnsl.so.2 /lib/libnsl.so.1
 
 ## for install oracle instant client
 ## https://oracle.github.io/odpi/doc/installation.html#linux
@@ -67,12 +46,6 @@ ENV TNS_ADMIN=/oracle_client/instantclient_11_2
 ENV NLS_LANG=SIMPLIFTED_CHINESE_CHINA_ZHS16GBK
 ENV LD_LIBRARY_PATH=/oracle_client/instantclient_11_2
 
-#python -c "import cx_Oracle as ora; ora.connect('cmbc/cmbc@198.1.1.1:1521/cmbc')"
-#docker run -d -v /home/ubuntu/:/app --name test 0b21aeee1773
-
-## /etc/apk/repositories
-# http://dl-cdn.alpinelinux.org/alpine/v3.7/main
-# http://dl-cdn.alpinelinux.org/alpine/v3.7/community
 RUN echo \
   # install oracle client and create soft link
   && mkdir /oracle_client && cd /oracle_client \
@@ -87,16 +60,15 @@ RUN echo \
   && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
   && echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
 
- # Add the build packages, and then will be deleted
+  # Add the build packages, and then will be deleted
   && apk add --no-cache --virtual=.build-deps $BUILD_PACKAGES \
- 
- # Add the packages, with a CDN-breakage fallback if needed
+
+  # Add the packages, with a CDN-breakage fallback if needed
   && apk add --no-cache $PACKAGES || \
     (sed -i -e 's/dl-cdn/dl-4/g' /etc/apk/repositories && apk add --no-cache $PACKAGES) \
 
- # turn back the clock -- so hacky!
+  # turn back the clock -- so hacky!
 #  && echo "http://dl-cdn.alpinelinux.org/alpine/v$ALPINE_VERSION/main/" > /etc/apk/repositories \
-#  && apk upgrade musl \
   
   # make some useful symlinks that are expected to exist
   && cd /usr/bin \
@@ -106,14 +78,13 @@ RUN echo \
   && { [[ -e python-config ]] || ln -sf python3-config python-config; } \
   && { [[ -e pip ]] || ln -sf pip3 pip; } \
   && ls -l idle pydoc python* pip* \
-  && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
-  && python get-pip.py \
-  && rm get-pip.py \
-#   && python -m pip install --upgrade --no-cache-dir pip \
+#  && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+#  && python get-pip.py \
+#  && rm get-pip.py \
+  && python -m pip install --upgrade --no-cache-dir pip \
   && ls -l idle pydoc python* pip* \
   
   # install my app software
-  && echo "Install Python Apps" \
   && pip install --no-cache-dir Django==2.1 \
   && pip install --no-cache-dir influxdb \
   && pip install --no-cache-dir pandas \
@@ -126,7 +97,6 @@ RUN echo \
   && pip install --no-cache-dir uwsgitop \
 
   # End
-  && echo "Install End" \
   && apk del .build-deps \
   && ls -l idle pydoc python* pip* \
   && echo
