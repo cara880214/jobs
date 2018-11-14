@@ -1,7 +1,7 @@
-FROM alpine:3.7
+FROM alpine:3.8
 #FROM daocloud.io/tianxiawuzhe/aiitoms:master-48cb69c
 
-ENV ALPINE_VERSION=3.7
+ENV ALPINE_VERSION=3.8
 
 #### packages from https://pkgs.alpinelinux.org/packages
 # These are always installed. Notes:
@@ -13,6 +13,7 @@ ENV ALPINE_VERSION=3.7
 #   * libstdc++: for pandas
 #   * libjpeg: for pyecharts
 #   * libaio: for cx_Oracle
+#   * expat: for python install pip
 ENV PACKAGES="\
   dumb-init \
   bash curl vim tini \
@@ -20,9 +21,10 @@ ENV PACKAGES="\
   python3==3.6.5-r0 \
   openblas \
   libstdc++ \
-  libjpeg \
+#  libjpeg \
   libaio libnsl \
-  expat==2.2.5-r0 \
+#  expat==2.2.5-r0 \
+#  libcrypto1.1==1.1.1-r4 \
 "
 
 # These packages are not installed immediately, but are added at runtime or ONBUILD to shrink the image as much as possible. Notes:
@@ -31,7 +33,6 @@ ENV PACKAGES="\
 #   * python-dev: are used for gevent e.g.
 #   * zlib-dev*: for install pyecharts
 #   * openblas-dev: for install scipy
-#   * expat: for python install pip
 ENV BUILD_PACKAGES="\
   build-base \
   linux-headers \
