@@ -23,7 +23,7 @@ ENV PACKAGES="\
   libstdc++ \
 #  libjpeg \
   libaio libnsl \
-  expat==2.2.5-r0 \
+#  expat==2.2.5-r0 \
 #  libcrypto1.1==1.1.1-r4 \
 "
 
