@@ -22,6 +22,7 @@ ENV PACKAGES="\
   libstdc++ \
   libjpeg \
   libaio libnsl \
+  expat==2.2.5-r0 \
 "
 
 # These packages are not installed immediately, but are added at runtime or ONBUILD to shrink the image as much as possible. Notes:
@@ -37,7 +38,6 @@ ENV BUILD_PACKAGES="\
   python3-dev==3.6.5-r0 \
   zlib-dev jpeg-dev \
   openblas-dev \
-  expat==2.2.5-r0 \
 "
 
 ## for install oracle instant client
