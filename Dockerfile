@@ -1,7 +1,7 @@
-FROM alpine:3.8
+FROM alpine:3.7
 #FROM daocloud.io/tianxiawuzhe/aiitoms:master-48cb69c
 
-ENV ALPINE_VERSION=3.8
+ENV ALPINE_VERSION=3.7
 
 #### packages from https://pkgs.alpinelinux.org/packages
 # These are always installed. Notes:
@@ -23,7 +23,7 @@ ENV PACKAGES="\
   libstdc++ \
 #  libjpeg \
   libaio libnsl \
-#  expat==2.2.5-r0 \
+  expat==2.2.5-r0 \
 #  libcrypto1.1==1.1.1-r4 \
 "
 
