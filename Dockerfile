@@ -82,7 +82,7 @@ RUN echo \
   && { [[ -e python ]] || ln -sf python3.6 python; } \
 #  && { [[ -e python-config ]] || ln -sf python3-config python-config; } \
 #  && { [[ -e pip ]] || ln -sf pip3 pip; } \
-  && ls -l idle pydoc python* pip* \
+  && ls -l python* pip* \
 #  && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
 #  && python get-pip.py \
 #  && rm get-pip.py \
