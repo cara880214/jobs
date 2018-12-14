@@ -1,7 +1,7 @@
-FROM alpine:3.7
+FROM alpine:3.8
 #FROM daocloud.io/tianxiawuzhe/aiitoms:master-48cb69c
 
-ENV ALPINE_VERSION=3.7
+ENV ALPINE_VERSION=3.8
 
 #### packages from https://pkgs.alpinelinux.org/packages
 # These are always installed. Notes:
@@ -18,7 +18,7 @@ ENV PACKAGES="\
   dumb-init \
   bash vim tini \
 #  ca-certificates \
-  python3==3.6.5-r0 \
+  python3 \
   openblas \
   libstdc++ \
 #  libjpeg \
@@ -37,9 +37,10 @@ ENV PACKAGES="\
 ENV BUILD_PACKAGES="\
   build-base \
   linux-headers \
-  python3-dev==3.6.5-r0 \
+  python3-dev \
 #  zlib-dev jpeg-dev \
   openblas-dev \
+  mysql-dev \
 "
 
 ## for install oracle instant client
@@ -58,9 +59,9 @@ RUN echo \
   && ln -s /usr/lib/libnsl.so.2.0.0  /usr/lib/libnsl.so.1 \
 
   # replacing default repositories with edge ones
-  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
-  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
-  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
+#  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+#  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
+#  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
 
   # Add the build packages, and then will be deleted
   && apk add --no-cache --virtual=.build-deps $BUILD_PACKAGES \
@@ -73,6 +74,8 @@ RUN echo \
 #  && echo "http://dl-cdn.alpinelinux.org/alpine/v$ALPINE_VERSION/main/" > /etc/apk/repositories \
   
   # make some useful symlinks that are expected to exist
+  && python3 -m pip install --upgrade --no-cache-dir pip \
+  && ls -l idle pydoc python* pip* \
   && cd /usr/bin \
   && { [[ -e idle ]] || ln -s idle3 idle; } \
   && { [[ -e pydoc ]] || ln -s pydoc3 pydoc; } \
@@ -83,8 +86,6 @@ RUN echo \
 #  && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
 #  && python get-pip.py \
 #  && rm get-pip.py \
-  && python -m pip install --upgrade --no-cache-dir pip \
-  && ls -l idle pydoc python* pip* \
   
   # install my app software
   && pip install --no-cache-dir Django==2.1 \
