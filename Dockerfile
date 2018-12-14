@@ -99,6 +99,10 @@ RUN echo \
   && pip install --no-cache-dir uwsgi \
   && pip install --no-cache-dir uwsgitop \
   && pip install --no-cache-dir mysqlclient \
+  && pip install --no-cache-dir redis \
+  && pip install --no-cache-dir celery \
+  && pip install --no-cache-dir kafka-python \
+  && pip install --no-cache-dir hdfs \
 
   # End
   && apk del .build-deps \
