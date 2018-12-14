@@ -97,6 +97,7 @@ RUN echo \
   && pip install --no-cache-dir xlrd \
   && pip install --no-cache-dir uwsgi \
   && pip install --no-cache-dir uwsgitop \
+  && pip install --no-cache-dir mysqlclient \
 
   # End
   && apk del .build-deps \
