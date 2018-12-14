@@ -75,13 +75,13 @@ RUN echo \
   
   # make some useful symlinks that are expected to exist
   && python3 -m pip install --upgrade --no-cache-dir pip \
-  && ls -l idle pydoc python* pip* \
   && cd /usr/bin \
-  && { [[ -e idle ]] || ln -s idle3 idle; } \
-  && { [[ -e pydoc ]] || ln -s pydoc3 pydoc; } \
+  && ls -l python* pip* \
+#  && { [[ -e idle ]] || ln -s idle3 idle; } \
+#  && { [[ -e pydoc ]] || ln -s pydoc3 pydoc; } \
   && { [[ -e python ]] || ln -sf python3.6 python; } \
-  && { [[ -e python-config ]] || ln -sf python3-config python-config; } \
-  && { [[ -e pip ]] || ln -sf pip3 pip; } \
+#  && { [[ -e python-config ]] || ln -sf python3-config python-config; } \
+#  && { [[ -e pip ]] || ln -sf pip3 pip; } \
   && ls -l idle pydoc python* pip* \
 #  && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
 #  && python get-pip.py \
