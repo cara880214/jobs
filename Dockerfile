@@ -101,7 +101,7 @@ RUN echo \
   && pip install --no-cache-dir hdfs \
 
   # End
-  && apk del .build-deps \
+#  && apk del .build-deps \
   && ls -l python* pip* \
   && echo
 
