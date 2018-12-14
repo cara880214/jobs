@@ -13,6 +13,7 @@ ENV ALPINE_VERSION=3.8
 #   * libjpeg: for pyecharts
 #   * libaio: for cx_Oracle
 #   * expat: for python install pip
+#   * mysql-dev: for install mysqlclient
 ENV PACKAGES="\
   dumb-init \
   bash vim tini \
@@ -23,6 +24,7 @@ ENV PACKAGES="\
   libaio \
 #  expat==2.2.5-r0 \
 #  libcrypto1.1==1.1.1-r4 \
+  mysql-dev \
 "
 
 # These packages are not installed immediately, but are added at runtime or ONBUILD to shrink the image as much as possible. Notes:
@@ -31,14 +33,12 @@ ENV PACKAGES="\
 #   * python-dev: are used for gevent e.g.
 #   * zlib-dev*: for install pyecharts
 #   * openblas-dev: for install scipy
-#   * mysql-dev: for install mysqlclient
 ENV BUILD_PACKAGES="\
   build-base \
   linux-headers \
   python3-dev \
 #  zlib-dev jpeg-dev \
   openblas-dev \
-  mysql-dev \
 "
 
 ## for install oracle instant client
@@ -101,7 +101,7 @@ RUN echo \
   && pip install --no-cache-dir hdfs \
 
   # End
-#  && apk del .build-deps \
+  && apk del .build-deps \
   && ls -l python* pip* \
   && echo
 
