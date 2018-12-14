@@ -1,5 +1,4 @@
 FROM alpine:3.8
-#FROM daocloud.io/tianxiawuzhe/aiitoms:master-48cb69c
 
 ENV ALPINE_VERSION=3.8
 
@@ -17,13 +16,11 @@ ENV ALPINE_VERSION=3.8
 ENV PACKAGES="\
   dumb-init \
   bash vim tini \
-#  ca-certificates \
   python3 \
   openblas \
   libstdc++ \
 #  libjpeg \
   libaio \
-# libnsl
 #  expat==2.2.5-r0 \
 #  libcrypto1.1==1.1.1-r4 \
 "
@@ -34,6 +31,7 @@ ENV PACKAGES="\
 #   * python-dev: are used for gevent e.g.
 #   * zlib-dev*: for install pyecharts
 #   * openblas-dev: for install scipy
+#   * mysql-dev: for install mysqlclient
 ENV BUILD_PACKAGES="\
   build-base \
   linux-headers \
@@ -91,8 +89,6 @@ RUN echo \
   && pip install --no-cache-dir Django==2.1 \
   && pip install --no-cache-dir influxdb \
   && pip install --no-cache-dir pandas \
-#  && pip install --no-cache-dir pyecharts \
-#  && pip install --no-cache-dir pyecharts_snapshot \
   && pip install --no-cache-dir scipy \
   && pip install --no-cache-dir cx_Oracle \
   && pip install --no-cache-dir xlrd \
