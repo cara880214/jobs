@@ -102,7 +102,7 @@ RUN echo \
 
   # End
   && apk del .build-deps \
-  && ls -l idle pydoc python* pip* \
+  && ls -l python* pip* \
   && echo
 
 # Copy in the entrypoint script -- this installs prerequisites on container start.
