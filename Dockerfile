@@ -11,6 +11,7 @@ ENV ALPINE_VERSION=3.8
 #   * openblas: required for numpy.
 #   * libstdc++: for pandas
 #   * libjpeg: for pyecharts
+#   * libnsl: for cx_Oracle's libclntsh.so
 #   * libaio: for cx_Oracle
 #   * expat: for python install pip
 #   * mysql-dev: for install mysqlclient
@@ -21,6 +22,7 @@ ENV PACKAGES="\
   openblas \
   libstdc++ \
 #  libjpeg \
+  libnsl \
   libaio \
 #  expat==2.2.5-r0 \
 #  libcrypto1.1==1.1.1-r4 \
