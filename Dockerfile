@@ -27,6 +27,7 @@ ENV PACKAGES="\
 #  expat==2.2.5-r0 \
 #  libcrypto1.1==1.1.1-r4 \
   mysql-dev \
+  nginx \
 "
 
 # These packages are not installed immediately, but are added at runtime or ONBUILD to shrink the image as much as possible. Notes:
@@ -88,6 +89,7 @@ RUN echo \
 #  && rm get-pip.py \
   
   # install my app software
+  #&& pip install --no-cache-dir supervisor \
   && pip install --no-cache-dir Django==2.1 \
   && pip install --no-cache-dir influxdb==5.2.1 \
   && pip install --no-cache-dir pandas==0.23.4 \
@@ -97,10 +99,13 @@ RUN echo \
   && pip install --no-cache-dir uwsgi==2.0.17.1 \
   && pip install --no-cache-dir uwsgitop==0.10 \
   && pip install --no-cache-dir mysqlclient==1.3.14 \
-  && pip install --no-cache-dir redis==3.0.1 \
+  && pip install --no-cache-dir redis==3.2.0 \
   && pip install --no-cache-dir celery==4.2.1 \
   && pip install --no-cache-dir kafka-python==1.4.4 \
   && pip install --no-cache-dir hdfs==2.2.2 \
+  && pip install --no-cache-dir django-celery-results \
+  && pip install --no-cache-dir django-celery-beat \
+  && pip install --no-cache-dir eventlet \
 
   # End
   && apk del .build-deps \
