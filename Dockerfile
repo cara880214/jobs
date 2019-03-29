@@ -35,12 +35,14 @@ ENV PACKAGES="\
 #   * python-dev: are used for gevent e.g.
 #   * zlib-dev*: for install pyecharts
 #   * openblas-dev: for install scipy
+#   * libpng-dev*: for install fbprophet
 ENV BUILD_PACKAGES="\
   build-base \
   linux-headers \
   python3-dev \
 #  zlib-dev jpeg-dev \
   openblas-dev \
+  libpng-dev freetype-dev \
 "
 
 ## for install oracle instant client
