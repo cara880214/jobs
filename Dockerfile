@@ -27,7 +27,6 @@ ENV PACKAGES="\
 #  expat==2.2.5-r0 \
 #  libcrypto1.1==1.1.1-r4 \
   mysql-dev \
-  nginx \
 "
 
 # These packages are not installed immediately, but are added at runtime or ONBUILD to shrink the image as much as possible. Notes:
@@ -51,6 +50,9 @@ ENV NLS_LANG=SIMPLIFTED_CHINESE_CHINA_ZHS16GBK
 ENV LD_LIBRARY_PATH=/oracle_client/instantclient_11_2
 
 RUN echo \
+  # save Dockerfile to image
+  && wget -O Dockerfile "https://raw.githubusercontent.com/tianxiawuzhe/alpine37-py365-django21-ai/master/Dockerfile" \
+  
   # install oracle client and create soft link
   && mkdir /oracle_client && cd /oracle_client \
   && wget -O client.zip "https://raw.githubusercontent.com/tianxiawuzhe/alpine37-py365-django21-ai/master/instantclient-basic-linux.x64-11.2.0.4.0.zip" \
@@ -70,7 +72,8 @@ RUN echo \
   # Add the packages, with a CDN-breakage fallback if needed
   && apk add --no-cache $PACKAGES || \
     (sed -i -e 's/dl-cdn/dl-4/g' /etc/apk/repositories && apk add --no-cache $PACKAGES) \
-
+  && sed -i -e 's:mouse=a:mouse-=a:g' /usr/share/vim/vim81/defaults.vim \
+  
   # turn back the clock -- so hacky!
 #  && echo "http://dl-cdn.alpinelinux.org/alpine/v$ALPINE_VERSION/main/" > /etc/apk/repositories \
   
@@ -106,6 +109,8 @@ RUN echo \
   && pip install --no-cache-dir django-celery-results \
   && pip install --no-cache-dir django-celery-beat \
   && pip install --no-cache-dir eventlet \
+  && pip install --no-cache-dir sklearn \
+  && pip install --no-cache-dir fbprophet \
 
   # End
   && apk del .build-deps \
