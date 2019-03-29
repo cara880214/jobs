@@ -95,27 +95,27 @@ RUN echo "Begin" \
   
   # install my app software
   #&& pip install --no-cache-dir supervisor \
-  && pip install --no-cache-dir Django==2.1 \
-  && pip install --no-cache-dir influxdb==5.2.1 \
-  && pip install --no-cache-dir pandas==0.23.4 \
-  && pip install --no-cache-dir scipy==1.1.0 \
-  && pip install --no-cache-dir cx_Oracle==7.0.0 \
-  && pip install --no-cache-dir xlrd==1.1.0 \
-  && pip install --no-cache-dir uwsgi==2.0.17.1 \
-  && pip install --no-cache-dir uwsgitop==0.10 \
-  && pip install --no-cache-dir mysqlclient==1.3.14 \
-  && pip install --no-cache-dir redis==3.2.0 \
-  && pip install --no-cache-dir celery==4.2.1 \
-  && pip install --no-cache-dir kafka-python==1.4.4 \
-  && pip install --no-cache-dir hdfs==2.2.2 \
-  && pip install --no-cache-dir django-celery-results \
-  && pip install --no-cache-dir django-celery-beat \
-  && pip install --no-cache-dir eventlet \
-  && pip install --no-cache-dir sklearn \
-  && pip install --no-cache-dir fbprophet \
+#  && pip install --no-cache-dir Django==2.1 \
+#  && pip install --no-cache-dir influxdb==5.2.1 \
+#  && pip install --no-cache-dir pandas==0.23.4 \
+#  && pip install --no-cache-dir scipy==1.1.0 \
+#  && pip install --no-cache-dir cx_Oracle==7.0.0 \
+#  && pip install --no-cache-dir xlrd==1.1.0 \
+#  && pip install --no-cache-dir uwsgi==2.0.17.1 \
+#  && pip install --no-cache-dir uwsgitop==0.10 \
+#  && pip install --no-cache-dir mysqlclient==1.3.14 \
+#  && pip install --no-cache-dir redis==3.2.0 \
+#  && pip install --no-cache-dir celery==4.2.1 \
+#  && pip install --no-cache-dir kafka-python==1.4.4 \
+#  && pip install --no-cache-dir hdfs==2.2.2 \
+#  && pip install --no-cache-dir django-celery-results \
+#  && pip install --no-cache-dir django-celery-beat \
+#  && pip install --no-cache-dir eventlet \
+#  && pip install --no-cache-dir sklearn \
+#  && pip install --no-cache-dir fbprophet \
 
   # End
-  && apk del .build-deps \
+#  && apk del .build-deps \
   && ls -l python* pip* \
   && echo "End"
 
