@@ -49,7 +49,7 @@ ENV TNS_ADMIN=/oracle_client/instantclient_11_2
 ENV NLS_LANG=SIMPLIFTED_CHINESE_CHINA_ZHS16GBK
 ENV LD_LIBRARY_PATH=/oracle_client/instantclient_11_2
 
-RUN echo \
+RUN echo "Begin" \
   # save Dockerfile to image
   && wget -O Dockerfile "https://raw.githubusercontent.com/tianxiawuzhe/alpine37-py365-django21-ai/master/Dockerfile" \
   
@@ -115,7 +115,7 @@ RUN echo \
   # End
   && apk del .build-deps \
   && ls -l python* pip* \
-  && echo
+  && echo "End"
 
 # Copy in the entrypoint script -- this installs prerequisites on container start.
 #COPY entrypoint.sh /entrypoint.sh
