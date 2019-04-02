@@ -56,11 +56,11 @@ RUN echo "Begin" \
   && wget -O Dockerfile "https://raw.githubusercontent.com/tianxiawuzhe/alpine37-py365-django21-ai/master/Dockerfile" \
   
   # install oracle client and create soft link
-  && mkdir /oracle_client && cd /oracle_client \
-  && wget -O client.zip "https://raw.githubusercontent.com/tianxiawuzhe/alpine37-py365-django21-ai/master/instantclient-basic-linux.x64-11.2.0.4.0.zip" \
-  && unzip client.zip && rm client.zip \
-  && cd /oracle_client/instantclient_11_2 \
-  && ln -s libclntsh.so.11.1  libclntsh.so \
+#  && mkdir /oracle_client && cd /oracle_client \
+#  && wget -O client.zip "https://raw.githubusercontent.com/tianxiawuzhe/alpine37-py365-django21-ai/master/instantclient-basic-linux.x64-11.2.0.4.0.zip" \
+#  && unzip client.zip && rm client.zip \
+#  && cd /oracle_client/instantclient_11_2 \
+#  && ln -s libclntsh.so.11.1  libclntsh.so \
   && ln -s /usr/lib/libnsl.so.2.0.0  /usr/lib/libnsl.so.1 \
 
   # replacing default repositories with edge ones
@@ -113,6 +113,8 @@ RUN echo "Begin" \
 #  && pip install --no-cache-dir eventlet \
 #  && pip install --no-cache-dir sklearn \
 #  && pip install --no-cache-dir fbprophet \
+  && pip install --no-cache-dir wheel \
+  && mkdir /whl && cd /whl && pip wheel sklearn
 
   # End
 #  && apk del .build-deps \
