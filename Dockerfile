@@ -114,7 +114,7 @@ RUN echo "Begin" \
 #  && pip install --no-cache-dir sklearn \
 #  && pip install --no-cache-dir fbprophet \
   && pip install --no-cache-dir wheel \
-  && mkdir /whl && cd /whl && pip wheel sklearn
+  && mkdir /whl && cd /whl && pip wheel sklearn \
 
   # End
 #  && apk del .build-deps \
