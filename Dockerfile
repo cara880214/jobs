@@ -64,7 +64,7 @@ RUN echo "Begin" \
   && ls -l python* pip* \
   && pip install --no-cache-dir wheel \
   && pip install numpy==1.16.2 \
-  && mkdir /whl && cd /whl && pip wheel sklearn \
+  && mkdir /whl && cd /whl && pip wheel fbprophet \
   && echo "End"
 
 ## RUN echo "Begin" \
