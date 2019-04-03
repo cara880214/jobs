@@ -65,7 +65,9 @@ RUN echo "Begin" \
   && pip install --no-cache-dir wheel \
   && pip install numpy==1.16.2 \
   && pip install Cython==0.29.6 \
-  && mkdir /whl && cd /whl && pip wheel fbprophet \
+  && mkdir /whl && cd /whl \
+  && wget -O pystan-2.18.1.0-cp36-cp36m-manylinux1_x86_64.whl "https://files.pythonhosted.org/packages/17/77/dd86797a7e7fccca117233c6d50cc171e0c2b2f5a0cd2a8d9753ee09b7be/pystan-2.18.1.0-cp36-cp36m-manylinux1_x86_64.whl" \
+  && pip wheel fbprophet \
   && echo "End"
 
 ## RUN echo "Begin" \
