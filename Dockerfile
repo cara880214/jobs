@@ -64,6 +64,7 @@ RUN echo "Begin" \
   && ls -l python* pip* \
   && pip install --no-cache-dir wheel \
   && pip install numpy==1.16.2 \
+  && pip install Cython==0.29.6 \
   && mkdir /whl && cd /whl && pip wheel fbprophet \
   && echo "End"
 
