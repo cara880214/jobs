@@ -43,6 +43,7 @@ ENV BUILD_PACKAGES="\
 #  zlib-dev jpeg-dev \
   openblas-dev \
   libpng-dev freetype-dev \
+  gcc musl-dev g++
 "
 
 ## for install oracle instant client
@@ -51,35 +52,37 @@ ENV TNS_ADMIN=/oracle_client/instantclient_11_2
 ENV NLS_LANG=SIMPLIFTED_CHINESE_CHINA_ZHS16GBK
 ENV LD_LIBRARY_PATH=/oracle_client/instantclient_11_2
 
-RUN apk add --no-cache python3 python3-dev \
-  && python3 -m pip install --upgrade --no-cache-dir pip \
-  && { [[ -e python ]] || ln -sf python3.6 python; } \
-  && echo "1 "$(date +"%Y%m%d %H:%M:%S") \
-  && apk --update add --no-cache gcc freetype-dev libpng-dev \
-  && echo "2 "$(date +"%Y%m%d %H:%M:%S") \
-  && apk add --no-cache --virtual .build-deps musl-dev g++ \
-  && echo "3 "$(date +"%Y%m%d %H:%M:%S") \
-  && pip install --no-cache-dir fbprophet==0.4.post2 \
-  && echo "4 "$(date +"%Y%m%d %H:%M:%S") \
-  && echo "END"
-    
-## RUN echo "Begin" \
-##   && ln -s /usr/lib/libnsl.so.2.0.0  /usr/lib/libnsl.so.1 \
-##   && apk add --no-cache --virtual=.build-deps $BUILD_PACKAGES \
-##   && apk add --no-cache $PACKAGES || \
-##     (sed -i -e 's/dl-cdn/dl-4/g' /etc/apk/repositories && apk add --no-cache $PACKAGES) \
-##   && sed -i -e 's:mouse=a:mouse-=a:g' /usr/share/vim/vim81/defaults.vim \
+## RUN apk add --no-cache python3 python3-dev \
 ##   && python3 -m pip install --upgrade --no-cache-dir pip \
-##   && cd /usr/bin \
-##   && ls -l python* pip* \
 ##   && { [[ -e python ]] || ln -sf python3.6 python; } \
-##   && ls -l python* pip* \
-##   && pip install --no-cache-dir wheel \
-##   && pip install numpy==1.16.2 \
-##   && pip install Cython==0.29.6 \
-##   && mkdir /whl && cd /whl \
-##   && pip wheel pystan==2.18.1.0 \
-##   && echo "End"
+##   && echo "1 "$(date +"%Y%m%d %H:%M:%S") \
+##   && apk --update add --no-cache gcc freetype-dev libpng-dev \
+##   && echo "2 "$(date +"%Y%m%d %H:%M:%S") \
+##   && apk add --no-cache --virtual .build-deps musl-dev g++ \
+##   && echo "3 "$(date +"%Y%m%d %H:%M:%S") \
+##   && pip install --no-cache-dir fbprophet==0.4.post2 \
+##   && echo "4 "$(date +"%Y%m%d %H:%M:%S") \
+##   && echo "END"
+    
+RUN echo "Begin" \
+  && ln -s /usr/lib/libnsl.so.2.0.0  /usr/lib/libnsl.so.1 \
+  && apk add --no-cache --virtual=.build-deps $BUILD_PACKAGES \
+  && apk add --no-cache $PACKAGES || \
+    (sed -i -e 's/dl-cdn/dl-4/g' /etc/apk/repositories && apk add --no-cache $PACKAGES) \
+  && sed -i -e 's:mouse=a:mouse-=a:g' /usr/share/vim/vim81/defaults.vim \
+  && python3 -m pip install --upgrade --no-cache-dir pip \
+  && cd /usr/bin \
+  && ls -l python* pip* \
+  && { [[ -e python ]] || ln -sf python3.6 python; } \
+  && ls -l python* pip* \
+  && pip install --no-cache-dir wheel \
+  && pip install numpy==1.16.2 \
+  && pip install Cython==0.29.6 \
+  && mkdir /whl && cd /whl \
+  && pip wheel numpy==1.16.2 \
+  && pip wheel Cython==0.29.6 \
+  && wget -O pystan-2.18.1.0.tar.gz "https://files.pythonhosted.org/packages/96/21/6452aadcbb5807fb8858e8789c74d62f5ebaece0351ff231f44064c44b33/pystan-2.18.1.0.tar.gz" \
+  && echo "End"
 
 ## RUN echo "Begin" \
 ##   && wget -O Dockerfile "https://raw.githubusercontent.com/tianxiawuzhe/alpine37-py365-django21-ai/master/Dockerfile" \
