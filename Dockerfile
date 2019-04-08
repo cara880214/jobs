@@ -43,7 +43,7 @@ ENV BUILD_PACKAGES="\
 #  zlib-dev jpeg-dev \
   openblas-dev \
   libpng-dev freetype-dev \
-  gcc musl-dev g++
+  gcc musl-dev g++ \
 "
 
 ## for install oracle instant client
