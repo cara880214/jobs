@@ -125,7 +125,7 @@ RUN echo "Begin" \
   \
   && pip install --no-cache-dir Django==2.1 \
   && pip install --no-cache-dir influxdb==5.2.1 \
-  && pip install --no-cache-dir /whl/numpy-1.16.2.whl \
+  && pip install --no-cache-dir /whl/${numpy} \
   && pip install --no-cache-dir pandas==0.23.4 \
   && pip install --no-cache-dir scipy==1.1.0 \
   && pip install --no-cache-dir cx_Oracle==7.0.0 \
@@ -140,10 +140,10 @@ RUN echo "Begin" \
   && pip install --no-cache-dir django-celery-results \
   && pip install --no-cache-dir django-celery-beat \
   && pip install --no-cache-dir eventlet \
-  && pip install --no-cache-dir /whl/scikit_learn-0.20.3.whl \
+  && pip install --no-cache-dir /whl/${scikit_learn} \
   && pip install --no-cache-dir sklearn \
-  && pip install --no-cache-dir /whl/Cython-0.29.6.whl \
-  && pip install --no-cache-dir /whl/pystan-2.18.1.0.whl \
+  && pip install --no-cache-dir /whl/${Cython} \
+  && pip install --no-cache-dir /whl/${pystan} \
   && pip install --no-cache-dir fbprophet \
   \
   && apk del .build-deps \
