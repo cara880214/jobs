@@ -84,15 +84,22 @@ ENV LD_LIBRARY_PATH=/oracle_client/instantclient_11_2
 ##   && wget -O pystan-2.18.1.0.tar.gz "https://files.pythonhosted.org/packages/96/21/6452aadcbb5807fb8858e8789c74d62f5ebaece0351ff231f44064c44b33/pystan-2.18.1.0.tar.gz" \
 ##   && echo "End"
 
+ENV GITHUB_URL=https://raw.githubusercontent.com/tianxiawuzhe/alpine37-py365-django21-ai/master
+
 RUN echo "Begin" \
-  && wget -O Dockerfile "https://raw.githubusercontent.com/tianxiawuzhe/alpine37-py365-django21-ai/master/Dockerfile" \
+  && wget -O Dockerfile "${GITHUB_URL}/Dockerfile" \
   \
   && mkdir /oracle_client && cd /oracle_client \
-  && wget -O client.zip "https://raw.githubusercontent.com/tianxiawuzhe/alpine37-py365-django21-ai/master/instantclient-basic-linux.x64-11.2.0.4.0.zip" \
+  && wget -O client.zip "${GITHUB_URL}/instantclient-basic-linux.x64-11.2.0.4.0.zip" \
   && unzip client.zip && rm client.zip \
   && cd /oracle_client/instantclient_11_2 \
   && ln -s libclntsh.so.11.1  libclntsh.so \
   && ln -s /usr/lib/libnsl.so.2.0.0  /usr/lib/libnsl.so.1 \
+  && mkdir /whl && cd /whl \
+  && wget -O numpy-1.16.2.whl "${GITHUB_URL}/whl/numpy-1.16.2-cp36-cp36m-linux_x86_64.whl" \
+  && wget -O Cython-0.29.6.whl "${GITHUB_URL}/whl/Cython-0.29.6-cp36-cp36m-linux_x86_64.whl" \
+  && wget -O pystan-2.18.1.0.whl "${GITHUB_URL}/whl/pystan-2.18.1.0-cp36-cp36m-linux_x86_64.whl" \
+  && wget -O scikit_learn-0.20.3.whl "${GITHUB_URL}/whl/scikit_learn-0.20.3-cp36-cp36m-linux_x86_64.whl" \
   \
   && apk add --no-cache --virtual=.build-deps $BUILD_PACKAGES \
   \
@@ -108,6 +115,7 @@ RUN echo "Begin" \
   \
   && pip install --no-cache-dir Django==2.1 \
   && pip install --no-cache-dir influxdb==5.2.1 \
+  && pip install --no-cache-dir /whl/numpy-1.16.2.whl \
   && pip install --no-cache-dir pandas==0.23.4 \
   && pip install --no-cache-dir scipy==1.1.0 \
   && pip install --no-cache-dir cx_Oracle==7.0.0 \
@@ -122,13 +130,16 @@ RUN echo "Begin" \
   && pip install --no-cache-dir django-celery-results \
   && pip install --no-cache-dir django-celery-beat \
   && pip install --no-cache-dir eventlet \
+  && pip install --no-cache-dir /whl/scikit_learn-0.20.3.whl \
   && pip install --no-cache-dir sklearn \
+  && pip install --no-cache-dir /whl/Cython-0.29.6.whl \
+  && pip install --no-cache-dir /whl/pystan-2.18.1.0.whl \
+  && pip install --no-cache-dir fbprophet \
   \
   && apk del .build-deps \
   && ls -l python* pip* \
   && echo "End"
   
-
 #&& pip install --no-cache-dir supervisor \
 #  && pip install --no-cache-dir fbprophet \
 # Copy in the entrypoint script -- this installs prerequisites on container start.
