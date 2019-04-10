@@ -101,14 +101,18 @@ RUN echo "Begin" \
   && numpy=numpy-1.16.2-cp36-cp36m-linux_x86_64.whl \
   && wget -O ${numpy} "${GITHUB_URL}/whl/${numpy}" \
   \
+  && scipy=scipy-1.1.0-cp36-cp36m-linux_x86_64.whl \
+  && wget -O ${scipy} "${GITHUB_URL}/whl/${scipy}" \
+  \
+  && scikit_learn=scikit_learn-0.20.3-cp36-cp36m-linux_x86_64.whl \
+  && wget -O ${scikit_learn} "${GITHUB_URL}/whl/${scikit_learn}" \
+  \
   && Cython=Cython-0.29.6-cp36-cp36m-linux_x86_64.whl \
   && wget -O ${Cython} "${GITHUB_URL}/whl/${Cython}" \
   \
   && pystan=pystan-2.18.1.0-cp36-cp36m-linux_x86_64.whl \
   && wget -O ${pystan} "${GITHUB_URL}/whl/${pystan}" \
   \
-  && scikit_learn=scikit_learn-0.20.3-cp36-cp36m-linux_x86_64.whl \
-  && wget -O ${scikit_learn} "${GITHUB_URL}/whl/${scikit_learn}" \
   && ls -lrt /whl \
   \
   && apk add --no-cache --virtual=.build-deps $BUILD_PACKAGES \
@@ -127,7 +131,7 @@ RUN echo "Begin" \
   && pip install --no-cache-dir influxdb==5.2.1 \
   && pip install --no-cache-dir /whl/${numpy} \
   && pip install --no-cache-dir pandas==0.23.4 \
-  && pip install --no-cache-dir scipy==1.1.0 \
+  && pip install --no-cache-dir /whl/${scipy} \
   && pip install --no-cache-dir cx_Oracle==7.0.0 \
   && pip install --no-cache-dir xlrd==1.1.0 \
   && pip install --no-cache-dir uwsgi==2.0.17.1 \
@@ -145,6 +149,7 @@ RUN echo "Begin" \
   && pip install --no-cache-dir /whl/${Cython} \
   && pip install --no-cache-dir /whl/${pystan} \
   && pip install --no-cache-dir fbprophet \
+  && pip install --no-cache-dir suds-jurko==0.6 \
   \
   && apk del .build-deps \
   && ls -l python* pip* \
