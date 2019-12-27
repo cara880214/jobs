@@ -24,6 +24,7 @@ ENV PACKAGES="\
 #  libjpeg \
   libnsl \
   libaio \
+  freetype==2.9.1-r1 \
 #  expat==2.2.5-r0 \
 #  libcrypto1.1==1.1.1-r4 \
   mysql-dev \
@@ -42,7 +43,7 @@ ENV BUILD_PACKAGES="\
   python3-dev \
 #  zlib-dev jpeg-dev \
   openblas-dev \
-  libpng-dev freetype-dev \
+  libpng-dev \
   gcc musl-dev g++ \
 "
 
