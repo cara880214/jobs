@@ -43,7 +43,7 @@ ENV BUILD_PACKAGES="\
   python3-dev \
 #  zlib-dev jpeg-dev \
   openblas-dev \
-  libpng-dev \
+  libpng-dev freetype-dev \
   gcc musl-dev g++ \
 "
 
