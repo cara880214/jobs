@@ -142,14 +142,14 @@ RUN echo "Begin" \
   && pip install --no-cache-dir celery==4.2.1 \
   && pip install --no-cache-dir kafka-python==1.4.4 \
   && pip install --no-cache-dir hdfs==2.2.2 \
-  && pip install --no-cache-dir django-celery-results \
-  && pip install --no-cache-dir django-celery-beat \
-  && pip install --no-cache-dir eventlet \
+  && pip install --no-cache-dir django-celery-results==1.0.4 \
+  && pip install --no-cache-dir django-celery-beat==1.4.0 \
+  && pip install --no-cache-dir eventlet==0.24.1 \
   && pip install --no-cache-dir /whl/${scikit_learn} \
   && pip install --no-cache-dir sklearn \
   && pip install --no-cache-dir /whl/${Cython} \
   && pip install --no-cache-dir /whl/${pystan} \
-  && pip install --no-cache-dir fbprophet \
+  && pip install --no-cache-dir fbprophet==0.4.post2 \
   && pip install --no-cache-dir suds-jurko==0.6 \
   \
   && apk del .build-deps \
