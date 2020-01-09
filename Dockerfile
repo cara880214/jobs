@@ -87,7 +87,7 @@ ENV LD_LIBRARY_PATH=/oracle_client/instantclient_11_2
 
 # ENV GITHUB_URL=https://raw.githubusercontent.com/tianxiawuzhe/alpine37-py365-django21-ai/master
 
-RUN echo "Begin" \
+RUN echo "Begin" && ls -lrt \
   && GITHUB_URL='https://github.com/tianxiawuzhe/alpine37-py365-django21-ai/raw/master' \
   && wget -O Dockerfile "${GITHUB_URL}/Dockerfile" \
   \
