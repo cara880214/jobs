@@ -88,7 +88,7 @@ RUN echo "Begin" && ls -lrt \
   \
   && apk add --no-cache $PACKAGES || \
     (sed -i -e 's/dl-cdn/dl-4/g' /etc/apk/repositories && apk add --no-cache $PACKAGES) \
-  && sed -i -e 's:mouse=a:mouse-=a:g' /usr/share/vim/vim81/defaults.vim \
+#  && sed -i -e 's:mouse=a:mouse-=a:g' /usr/share/vim/vim81/defaults.vim \
   \
   && python3 -m pip install --upgrade --no-cache-dir pip \
   && cd /usr/bin \
