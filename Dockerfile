@@ -17,7 +17,7 @@ ENV ALPINE_VERSION=3.12
 #   * mysql-dev: for install mysqlclient
 ENV PACKAGES="\
   dumb-init \
-  bash vim tini scp \
+  bash vim tini \
 ##  python3 \
 ##  openblas \
 ##  libstdc++ \
@@ -120,7 +120,7 @@ RUN echo "Begin" && ls -lrt \
 #  && pip install --no-cache-dir fbprophet==0.4.post2 \
 #  && pip install --no-cache-dir suds-jurko==0.6 \
   \
-  && apk del .build-deps \
+#  && apk del .build-deps \
   && ls -l python* pip* \
   && echo "End"
   
