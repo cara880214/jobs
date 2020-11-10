@@ -26,6 +26,7 @@ ENV PACKAGES="\
 ##  freetype==2.9.1-r1 \
 ###  expat==2.2.9-r1 \
 ###  libcrypto1.1==1.1.1-r4 \
+  mysql-dev \
 "
 
 # These packages are not installed immediately, but are added at runtime or ONBUILD to shrink the image as much as possible. Notes:
@@ -44,7 +45,6 @@ ENV BUILD_PACKAGES="\
 #  zlib-dev jpeg-dev \
 ##  openblas-dev \
 ##  libpng-dev freetype-dev \
-  mysql-dev \
 "
 
 ## for install oracle instant client
@@ -84,11 +84,9 @@ RUN echo "Begin" && ls -lrt \
 ##  \
 ##  && ls -lrt /whl \
 ##  \
+  && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
   && apk add --no-cache --virtual=.build-deps $BUILD_PACKAGES \
-  \
-  && apk add --no-cache $PACKAGES || \
-    (sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
-    && apk add --no-cache $PACKAGES) \
+  && apk add --no-cache $PACKAGES \
   && sed -i 's:mouse=a:mouse-=a:g' /usr/share/vim/vim82/defaults.vim \
   && { [[ -e /usr/bin/python ]] || ln -sf /usr/bin/python3.8 /usr/bin/python; } \
   && python -m ensurepip \
@@ -99,7 +97,7 @@ RUN echo "Begin" && ls -lrt \
   \
   && pip install --no-cache-dir wheel \
   && pip install --no-cache-dir Django==3.1.2 \
-#  && pip install --no-cache-dir uwsgi==2.0.19.1 \
+  && pip install --no-cache-dir uwsgi==2.0.19.1 \
   && pip install --no-cache-dir uwsgitop==0.11 \
   && pip install --no-cache-dir mysqlclient==2.0.1 \
   && pip install --no-cache-dir influxdb==5.3.0 \
