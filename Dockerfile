@@ -14,11 +14,10 @@ ENV ALPINE_VERSION=3.12
 #   * libnsl: for cx_Oracle's libclntsh.so
 #   * libaio: for cx_Oracle
 #   * expat: for python install pip
-#   * mysql-dev: for install mysqlclient
 ENV PACKAGES="\
   dumb-init \
   bash vim tini \
-##  python3 \
+  python3 \
 ##  openblas \
 ##  libstdc++ \
 ###  libjpeg \
@@ -27,7 +26,6 @@ ENV PACKAGES="\
 ##  freetype==2.9.1-r1 \
 ###  expat==2.2.5-r0 \
 ###  libcrypto1.1==1.1.1-r4 \
-##  mysql-dev \
 "
 
 # These packages are not installed immediately, but are added at runtime or ONBUILD to shrink the image as much as possible. Notes:
@@ -37,14 +35,16 @@ ENV PACKAGES="\
 #   * zlib-dev*: for install pyecharts
 #   * openblas-dev: for install scipy
 #   * libpng-dev*: for install fbprophet
+#   * mysql-dev: for install mysqlclient
 ENV BUILD_PACKAGES="\
   build-base \
   linux-headers \
-  python3-dev \
+  gcc musl-dev g++ \
+#  python3-dev \
 #  zlib-dev jpeg-dev \
 ##  openblas-dev \
 ##  libpng-dev freetype-dev \
-##  gcc musl-dev g++ \
+  mysql-dev \
 "
 
 ## for install oracle instant client
@@ -87,9 +87,32 @@ RUN echo "Begin" && ls -lrt \
   && apk add --no-cache --virtual=.build-deps $BUILD_PACKAGES \
   \
   && apk add --no-cache $PACKAGES || \
-    (sed -i -e 's/dl-cdn/dl-4/g' /etc/apk/repositories && apk add --no-cache $PACKAGES) \
-#  && sed -i -e 's:mouse=a:mouse-=a:g' /usr/share/vim/vim81/defaults.vim \
+    (sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
+    && apk add --no-cache $PACKAGES) \
+  && sed -i 's:mouse=a:mouse-=a:g' /usr/share/vim/vim82/defaults.vim \
+  && { [[ -e /usr/bin/python ]] || ln -sf /usr/bin/python3.8 /usr/bin/python; } \
+  && python -m ensurepip \
+#  && { [[ -e /usr/bin/pip ]] || ln -sf /usr/bin/pip3 /usr/bin/pip; } \
+  && python -m pip install --upgrade --no-cache-dir pip \
+  && cd /usr/bin \
+  && ls -l python* pip* \
   \
+  && pip install --no-cache-dir Django==3.1.2 \
+  && pip install --no-cache-dir uwsgi==2.0.19.1 \
+  && pip install --no-cache-dir uwsgitop==0.11 \
+  && pip install --no-cache-dir mysqlclient==2.0.1 \
+  && pip install --no-cache-dir influxdb==5.3.0 \
+  && pip install --no-cache-dir mongo==0.2.0 \
+  && pip install --no-cache-dir cx_Oracle==8.0.1 \
+  && pip install --no-cache-dir redis3==3.5.2.2 \
+  && pip install --no-cache-dir kafka-python==2.0.2 \
+  && pip install --no-cache-dir elasticsearch7==7.9.1 \
+#  && pip install --no-cache-dir hdfs==2.2.2 \
+#  && pip install --no-cache-dir django-celery-results==1.0.4 \
+#  && pip install --no-cache-dir django-celery-beat==1.4.0 \
+  \
+  && apk del .build-deps \
+  && ls -l python* pip* \
   && echo "End"
   
 # This script installs APK and Pip prerequisites on container start, or ONBUILD. Notes:
