@@ -99,7 +99,7 @@ RUN echo "Begin" && ls -lrt \
   \
   && pip install --no-cache-dir wheel \
   && pip install --no-cache-dir Django==3.1.2 \
-  && pip install --no-cache-dir uwsgi==2.0.19.1 \
+#  && pip install --no-cache-dir uwsgi==2.0.19.1 \
   && pip install --no-cache-dir uwsgitop==0.11 \
   && pip install --no-cache-dir mysqlclient==2.0.1 \
   && pip install --no-cache-dir influxdb==5.3.0 \
