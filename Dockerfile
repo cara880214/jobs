@@ -90,38 +90,6 @@ RUN echo "Begin" && ls -lrt \
     (sed -i -e 's/dl-cdn/dl-4/g' /etc/apk/repositories && apk add --no-cache $PACKAGES) \
 #  && sed -i -e 's:mouse=a:mouse-=a:g' /usr/share/vim/vim81/defaults.vim \
   \
-  && python3 -m pip install --upgrade --no-cache-dir pip \
-  && cd /usr/bin \
-  && ls -l python* pip* \
-  && { [[ -e python ]] || ln -sf python3.6 python; } \
-  && ls -l python* pip* \
-  \
-  && pip install --no-cache-dir Django==2.1 \
-  && pip install --no-cache-dir influxdb==5.2.1 \
-#  && pip install --no-cache-dir /whl/${numpy} \
-#  && pip install --no-cache-dir pandas==0.23.4 \
-#  && pip install --no-cache-dir /whl/${scipy} \
-  && pip install --no-cache-dir cx_Oracle==7.0.0 \
-#  && pip install --no-cache-dir xlrd==1.1.0 \
-  && pip install --no-cache-dir uwsgi==2.0.17.1 \
-  && pip install --no-cache-dir uwsgitop==0.10 \
-  && pip install --no-cache-dir mysqlclient==1.3.14 \
-  && pip install --no-cache-dir redis==3.2.0 \
-#  && pip install --no-cache-dir celery==4.2.1 \
-  && pip install --no-cache-dir kafka-python==1.4.4 \
-  && pip install --no-cache-dir hdfs==2.2.2 \
-#  && pip install --no-cache-dir django-celery-results==1.0.4 \
-#  && pip install --no-cache-dir django-celery-beat==1.4.0 \
-#  && pip install --no-cache-dir eventlet==0.24.1 \
-#  && pip install --no-cache-dir /whl/${scikit_learn} \
-#  && pip install --no-cache-dir sklearn \
-#  && pip install --no-cache-dir /whl/${Cython} \
-#  && pip install --no-cache-dir /whl/${pystan} \
-#  && pip install --no-cache-dir fbprophet==0.4.post2 \
-#  && pip install --no-cache-dir suds-jurko==0.6 \
-  \
-#  && apk del .build-deps \
-  && ls -l python* pip* \
   && echo "End"
   
 # This script installs APK and Pip prerequisites on container start, or ONBUILD. Notes:
