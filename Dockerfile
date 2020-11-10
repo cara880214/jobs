@@ -16,7 +16,7 @@ ENV ALPINE_VERSION=3.12
 #   * expat: for python install pip
 ENV PACKAGES="\
   dumb-init \
-  bash vim tini \
+  bash vim tini ncftp busybox-extras \
   python3 \
 ##  openblas \
 ##  libstdc++ \
@@ -24,7 +24,7 @@ ENV PACKAGES="\
   libnsl \
   libaio \
 ##  freetype==2.9.1-r1 \
-###  expat==2.2.5-r0 \
+###  expat==2.2.9-r1 \
 ###  libcrypto1.1==1.1.1-r4 \
 "
 
@@ -97,6 +97,7 @@ RUN echo "Begin" && ls -lrt \
   && cd /usr/bin \
   && ls -l python* pip* \
   \
+  && pip install --no-cache-dir wheel \
   && pip install --no-cache-dir Django==3.1.2 \
   && pip install --no-cache-dir uwsgi==2.0.19.1 \
   && pip install --no-cache-dir uwsgitop==0.11 \
