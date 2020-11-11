@@ -26,7 +26,6 @@ ENV PACKAGES="\
 ##  freetype==2.9.1-r1 \
 ###  expat==2.2.9-r1 \
 ###  libcrypto1.1==1.1.1-r4 \
-  mysql-dev \
 "
 
 # These packages are not installed immediately, but are added at runtime or ONBUILD to shrink the image as much as possible. Notes:
@@ -45,6 +44,7 @@ ENV BUILD_PACKAGES="\
 #  zlib-dev jpeg-dev \
 ##  openblas-dev \
 ##  libpng-dev freetype-dev \
+  mysql-dev \
 "
 
 ## for install oracle instant client
@@ -97,9 +97,9 @@ RUN echo "Begin" && ls -lrt \
   \
   && pip install --no-cache-dir wheel \
   && pip install --no-cache-dir Django==3.1.2 \
-  && pip install --no-cache-dir uwsgi==2.0.19.1 \
+#  && pip install --no-cache-dir uwsgi==2.0.19.1 \
   && pip install --no-cache-dir uwsgitop==0.11 \
-  && pip install --no-cache-dir mysqlclient==2.0.1 \
+#  && pip install --no-cache-dir mysqlclient==2.0.1 \
   && pip install --no-cache-dir influxdb==5.3.0 \
   && pip install --no-cache-dir mongo==0.2.0 \
   && pip install --no-cache-dir cx_Oracle==8.0.1 \
