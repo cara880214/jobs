@@ -102,7 +102,7 @@ RUN echo "Begin" && ls -lrt \
 #  && pip install --no-cache-dir mysqlclient==2.0.1 \
   && pip install --no-cache-dir influxdb==5.3.0 \
   && pip install --no-cache-dir mongo==0.2.0 \
-  && pip install --no-cache-dir cx_Oracle==8.0.1 \
+#  && pip install --no-cache-dir cx_Oracle==8.0.1 \
   && pip install --no-cache-dir redis3==3.5.2.2 \
   && pip install --no-cache-dir kafka-python==2.0.2 \
   && pip install --no-cache-dir elasticsearch7==7.9.1 \
@@ -110,7 +110,7 @@ RUN echo "Begin" && ls -lrt \
 #  && pip install --no-cache-dir django-celery-results==1.0.4 \
 #  && pip install --no-cache-dir django-celery-beat==1.4.0 \
   \
-  && apk del .build-deps \
+#  && apk del .build-deps \
   && ls -l python* pip* \
   && echo "End"
   
