@@ -40,7 +40,7 @@ ENV BUILD_PACKAGES="\
   build-base \
   linux-headers \
   gcc musl-dev g++ \
-#  python3-dev \
+  python3-dev \
 #  zlib-dev jpeg-dev \
 ##  openblas-dev \
 ##  libpng-dev freetype-dev \
@@ -85,8 +85,11 @@ RUN echo "Begin" && ls -lrt \
 ##  && ls -lrt /whl \
 ##  \
   && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
+  && echo "********** 安装临时依赖" \
   && apk add --no-cache --virtual=.build-deps $BUILD_PACKAGES \
+  && echo "********** 安装永久依赖" \
   && apk add --no-cache $PACKAGES \
+  && echo "********** 更新python信息" \
   && sed -i 's:mouse=a:mouse-=a:g' /usr/share/vim/vim82/defaults.vim \
   && { [[ -e /usr/bin/python ]] || ln -sf /usr/bin/python3.8 /usr/bin/python; } \
   && python -m ensurepip \
@@ -94,15 +97,15 @@ RUN echo "Begin" && ls -lrt \
   && python -m pip install --upgrade --no-cache-dir pip \
   && cd /usr/bin \
   && ls -l python* pip* \
-  \
+  && echo "********** 安装python包" \
   && pip install --no-cache-dir wheel \
   && pip install --no-cache-dir Django==3.1.2 \
-#  && pip install --no-cache-dir uwsgi==2.0.19.1 \
+  && pip install --no-cache-dir uwsgi==2.0.19.1 \
   && pip install --no-cache-dir uwsgitop==0.11 \
-#  && pip install --no-cache-dir mysqlclient==2.0.1 \
+  && pip install --no-cache-dir mysqlclient==2.0.1 \
   && pip install --no-cache-dir influxdb==5.3.0 \
   && pip install --no-cache-dir mongo==0.2.0 \
-#  && pip install --no-cache-dir cx_Oracle==8.0.1 \
+  && pip install --no-cache-dir cx_Oracle==8.0.1 \
   && pip install --no-cache-dir redis3==3.5.2.2 \
   && pip install --no-cache-dir kafka-python==2.0.2 \
   && pip install --no-cache-dir elasticsearch7==7.9.1 \
@@ -110,7 +113,8 @@ RUN echo "Begin" && ls -lrt \
 #  && pip install --no-cache-dir django-celery-results==1.0.4 \
 #  && pip install --no-cache-dir django-celery-beat==1.4.0 \
   \
-#  && apk del .build-deps \
+  && echo "********** 删除依赖包" \
+  && apk del .build-deps \
   && ls -l python* pip* \
   && echo "End"
   
