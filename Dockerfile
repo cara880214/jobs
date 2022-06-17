@@ -10,12 +10,11 @@ COPY ./instantclient-basic-linux.x64-11.2.0.4.0.zip ./entrypoint.sh   /
 
 ## running
 RUN echo "Begin" \
-  && echo "********** 安装oracle驱动" \
+  && echo "********** 安装oracle驱动********************" \
   && mkdir /oracle_client \
   && mv /instantclient-basic-linux.x64-11.2.0.4.0.zip /oracle_client \
   && cd /oracle_client \
   && unzip instantclient-basic-linux.x64-11.2.0.4.0.zip && rm -rf instantclient-basic-linux.x64-11.2.0.4.0.zip \
-
   && echo "End"
 
 ENTRYPOINT ["/entrypoint.sh"]
