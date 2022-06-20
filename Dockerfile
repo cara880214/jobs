@@ -7,6 +7,11 @@ ENV LD_LIBRARY_PATH=/oracle_client/instantclient_11_2
 
 COPY ./instantclient-basic-linux.x64-11.2.0.4.0.zip  /
 
+ENV GCC_PACKAGES="\
+  gcc \
+  g++ \
+  libcec-dev \
+"
 
 ## running
 RUN echo "Begin" \
@@ -15,5 +20,12 @@ RUN echo "Begin" \
   && mv /instantclient-basic-linux.x64-11.2.0.4.0.zip /oracle_client \
   && cd /oracle_client \
   && unzip instantclient-basic-linux.x64-11.2.0.4.0.zip && rm -rf instantclient-basic-linux.x64-11.2.0.4.0.zip \
+  && cd /oracle_client/instantclient_11_2 \
+  && ln -s libclntsh.so.11.1  libclntsh.so \
+  && ln -s /usr/lib/libnsl.so.2.0.0  /usr/lib/libnsl.so.1 \
+  && echo "********** 安装相关的gcc依赖包*************************" \
+  && apk add --no-cache $GCC_PACKAGES \
+  && echo "********** 安装python包cx_oracle***********************" \
+  && pip install --no-cache-dir cx_Oracle==8.0.1 -i http://mirrors.aliyun.com/pypi/simple  --trusted-host mirrors.aliyun.com \    
   && echo "End"
 
