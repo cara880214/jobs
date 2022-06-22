@@ -11,6 +11,8 @@ ENV GCC_PACKAGES="\
   gcc \
   g++ \
   libcec-dev \
+  libnsl \
+  libaio \
 "
 
 ## running
